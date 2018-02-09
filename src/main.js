@@ -5,6 +5,7 @@ import App from './App';
 import router from './router';
 import VueFire from 'vuefire';
 import firebase from 'firebase';
+import Person from './components/Person';
 
 Vue.config.productionTip = false;
 
