@@ -84,7 +84,11 @@ export default {
       alert(this.name);
     },
     addRow() {
-      this.relations.push({name:"",job:""});
+      this.relations.push({contact_mail: '', 
+          contact: '', 
+          contact_description: '', 
+          role: '', 
+          other_role: ''});
     }
   }
 }
