@@ -2,10 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import App from './App';
-import router from './router';
 import VueFire from 'vuefire';
 import firebase from 'firebase';
-import Person from './components/Person';
 
 Vue.config.productionTip = false;
 
@@ -21,12 +19,52 @@ var config = {
   storageBucket: "strukturen-fragebogen.appspot.com",
   messagingSenderId: "168288290356"
 };
-firebase.initializeApp(config);
+var firebaseApp = firebase.initializeApp(config);
+firebase.auth().signInAnonymously().catch(function (error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  console.log(errorMessage);
+}).then(function () {
+  console.log("yaayyy");
+});
+firebase.auth().onAuthStateChanged(function (user) {
+  if (user) {
+    // User is signed in.
+    var isAnonymous = user.isAnonymous;
+    var uid = user.uid;
+    console.log(uid);
+    // ...
+  } else {
+    // User is signed out.
+    // console.log('lalala');
+    // ...
+  }
+  // ...
+});
+var db = firebaseApp.database();
 
 /* eslint-disable no-new */
 new Vue({
+
   el: '#app',
-  router,
+  firebase: {
+    people: {
+      source: db.ref('people'),
+      // Optional, allows you to handle any errors.
+      cancelCallback(err) {
+        console.error(err);
+      }
+    }
+  },
   components: { App },
+  computed: {
+    userId() {
+      return
+    }
+    person() {
+      return this.people[0];
+    }
+  },
   template: '<App/>',
 });

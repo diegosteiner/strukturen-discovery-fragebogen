@@ -2,7 +2,7 @@
   <div>
     <h1>Hallo {{ name }}</h1>
     Mail: {{ email }}<br />
-    
+
     <form @submit.prevent='save'>
       Name: <input v-model="name"><br />
       Beschreibung: <textarea v-model="description" placeholder="description"></textarea><br />
@@ -18,22 +18,29 @@
 
 <script>
 export default {
-  name: 'Person',
-  data () {
-    return {
-      name: "",
-      email: "",
-      description: '',
-      options: {
-         "1":"Coach",
-         "2":"Kantonsleitungsmitglied"
-      }
+  name: "Person",
+  props: ["value"],
+  computed: {
+    name: function() {
+      return this.value.name;
+    },
+    email: function() {
+      return this.value.email;
     }
+  },
+  data() {
+    return {
+      description: "",
+      options: {
+        "1": "Coach",
+        "2": "Kantonsleitungsmitglied"
+      }
+    };
   },
   methods: {
     save() {
       alert(this.name);
     }
   }
-}
+};
 </script>
