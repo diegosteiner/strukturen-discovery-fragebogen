@@ -25,7 +25,7 @@
           Andere: <input type="text" v-model="my_other_role" />
         </p>
         In dieser Rolle mache ich folgendes: <br />
-        <textarea rows="6" cols="60" v-model="description"></textarea><br />
+        <textarea rows="6" cols="30" v-model="description"></textarea><br />
       </form>
     </div>
 
@@ -43,7 +43,7 @@
           Andere: <input type="text" v-model="relation.other_role" />
         </p>
         Mit folgenden Themen: <br />
-        <textarea rows="6" cols="60" name="contact_description" v-model="relation.contact_description"></textarea>
+        <textarea rows="6" cols="30" name="contact_description" v-model="relation.contact_description"></textarea>
       </div>
       <button class="button" @click="addRow">+ Kontakt hinzufügen</button>
     </div>
@@ -94,10 +94,6 @@ export default {
 }
 </script>
 <style>
-  #relations {
-    width: 50%;
-  }
-
   #relations div {
     border: 1px solid rgb(15,105,175);
     padding: 15px;
@@ -105,7 +101,7 @@ export default {
   }
 
   #mainForm {
-    border: 1px solid rgb(15,105,175);
+    border: 2px solid rgb(15,105,175);
     padding: 15px;
   }
 
@@ -115,5 +111,13 @@ export default {
     color: white;
     border: none;
     margin-top: 10px;
+  }
+
+  textarea {
+    width:100%;
+  }
+
+  input, select, textarea {
+    border: 1px solid gray;
   }
 </style>
