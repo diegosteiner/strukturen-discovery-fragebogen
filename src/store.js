@@ -16,8 +16,7 @@ export const store = new Vuex.Store({
       description: "",
       my_role: "",
       my_other_role: "",
-      relations: [
-      ]
+      relations: []
     }
   },
   getters: {
@@ -36,7 +35,7 @@ export const store = new Vuex.Store({
       }
     },
     setPerson: (state, person) => {
-      state.person = person
+      Object.assign(state.person, person)
     },
     addRelation: state => {
       state.person.relations.push({
