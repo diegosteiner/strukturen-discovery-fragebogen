@@ -29,9 +29,11 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
-    setUser: state => {
-      state.user = Firebase.auth().currentUser;
-      state.person.email = state.user.email;
+    setUser: (state, user) => {
+      state.user = user;
+      if (user != null) {
+        state.person.email = state.user.email;
+      }
     },
     setPerson: (state, person) => {
       state.person = person
@@ -48,7 +50,7 @@ export const store = new Vuex.Store({
   },
   actions: {
     setUser: context => {
-      context.commit('setUser');
+      context.commit('setUser', Firebase.auth().currentUser);
     },
     setPerson: (context, person) => {
       context.commit('setPerson', person);
@@ -75,8 +77,7 @@ export const store = new Vuex.Store({
     savePersonToDatabase: context => {
       const uid = context.getters.getUser.uid;
       if (!uid) { return false; }
-
-      db.ref('people/' + uid).set(context.getters.getPerson);
+      return db.ref('people/' + uid).set(context.getters.getPerson);
     }
   }
 });

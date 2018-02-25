@@ -48,7 +48,7 @@
       <button class="button" @click="addRow">+ Kontakt hinzufügen</button>
     </div>
     <div>
-      <button class="button" @click='save' type='submit'>Speichern</button>
+      <button v-bind:class="{ button: true, ok: dataSaved }" @click='save' type='submit'>Speichern</button>
     </div>
   </div>
 </template>
@@ -58,6 +58,7 @@ export default {
   name: "Person",
   data() {
     return {
+      dataSaved: false,
       person: {},
       roles: [
         { text: "Coach", value: "coach" },
@@ -76,7 +77,9 @@ export default {
       this.$store.dispatch("addRelation");
     },
     save: function() {
-      return this.$store.dispatch("setPerson", this.person);
+      return this.$store.dispatch("setPerson", this.person).then(() => {
+        this.dataSaved = true;
+      });
     }
   }
 };
@@ -93,12 +96,29 @@ export default {
   padding: 15px;
 }
 
+@keyframes ok {
+  0% {
+    background-color: rgb(15, 105, 175);
+  }
+  1% {
+    background-color: rgb(15, 175, 23);
+  }
+  100% {
+    background-color: rgb(15, 105, 175);
+  }
+}
+
 .button {
   height: 40px;
   background-color: rgb(15, 105, 175);
   color: white;
   border: none;
   margin-top: 10px;
+}
+
+.ok {
+  animation: ok 1s 1;
+  animation-timing-function: linear;
 }
 
 textarea {
