@@ -10,6 +10,6 @@ var config = {
   messagingSenderId: "168288290356"
 };
 
-firebase.database.enableLogging(true) // toggle on for debug (it's noisy)
+firebase.database.enableLogging(false) // toggle on for debug (it's noisy)
 export const firebaseApp = firebase.initializeApp(config);
 export const db = firebaseApp.database();
