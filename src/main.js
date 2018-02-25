@@ -2,41 +2,46 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import App from './App';
-import VueFire from 'vuefire';
-import firebase from 'firebase';
+import Login from './components/Login.vue';
+import Person from './components/Person.vue';
+// import VueFire from 'vuefire';
+import Firebase from 'firebase';
 import { db } from './services/firebase';
+import { store } from './store';
+import VueRouter from 'vue-router';
 
-Vue.config.productionTip = false;
+// Vue.use(VueFire);
+Vue.use(VueRouter);
 
-// explicit installation required in module environments
-Vue.use(VueFire);
+const router = new VueRouter({
+  routes: [{
+    path: '',
+    name: 'Person',
+    component: Person
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  }],
+  mode: 'history'
+});
 
+router.beforeEach((to, from, next) => {
+  if (!Firebase.auth().currentUser) {
+    next('/login');
+  } else {
+    next();
+  }
+});
 
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  beforeCreate: function () {
-
-    // Setup Firebase onAuthStateChanged handler
-    //
-    // https://firebase.google.com/docs/reference/js/firebase.auth.Auth
-    // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#onAuthStateChanged
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        this.user = user
-        // https://github.com/vuejs/vuefire/blob/master/src/vuefire.js#L169
-        this.$bindAsObject('person', db.ref('people/' + user.uid))
-      } else {
-        // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signInAnonymously
-        firebase.auth().signInAnonymously().catch(console.error)
-      }
-    }.bind(this))
-
-  },
-  components: { App },
-  data: {
-    user: {},
-    person: {}
-  },
-  template: '<App/>',
+// store: store,
+Firebase.auth().onAuthStateChanged(function (user) {
+  new Vue({
+    el: '#app',
+    store: store,
+    router: router,
+    render: h => h(App)
+  });
 });
