@@ -10,6 +10,7 @@ export const store = new Vuex.Store({
   strict: false,
   state: {
     user: null,
+    dataSaved: false,
     person: {
       name: "",
       email: "",
@@ -25,9 +26,15 @@ export const store = new Vuex.Store({
     },
     getPerson: state => {
       return state.person
+    },
+    getDataSaved: state => {
+      return state.dataSaved
     }
   },
   mutations: {
+    setDataSaved: (state, bool) => {
+      state.dataSaved = bool;
+    },
     setUser: (state, user) => {
       state.user = user;
       if (user != null) {
@@ -53,7 +60,7 @@ export const store = new Vuex.Store({
     },
     setPerson: (context, person) => {
       context.commit('setPerson', person);
-      context.dispatch('savePersonToDatabase');
+      context.commit('setDataSaved', false);
     },
     addRelation: ({ commit }) => {
       commit('addRelation');
@@ -63,12 +70,14 @@ export const store = new Vuex.Store({
 
         let uid = context.getters.getUser.uid;
 
-        if (!uid) { reject(); }
+        if (!uid) { reject("No uid"); }
 
         db.ref('people/' + uid).on("value", function (snapshot) {
           let val = snapshot.val();
-          if (val == null) { reject() }
-          context.commit('setPerson', snapshot.val())
+          if (val != null) {
+            context.commit('setPerson', snapshot.val())
+            context.commit('setDataSaved', true);
+          }
           resolve();
         });
       });
@@ -76,7 +85,9 @@ export const store = new Vuex.Store({
     savePersonToDatabase: context => {
       const uid = context.getters.getUser.uid;
       if (!uid) { return false; }
-      return db.ref('people/' + uid).set(context.getters.getPerson);
+      return db.ref('people/' + uid).set(context.getters.getPerson).then(() => {
+        context.commit('setDataSaved', true);
+      });
     }
   }
 });

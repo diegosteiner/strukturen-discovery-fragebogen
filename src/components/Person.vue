@@ -12,9 +12,9 @@
       Ut luctus pulvinar diam, luctus semper justo gravida sit amet. Praesent tempus enim quis volutpat rutrum.
       Mauris venenatis bibendum ante. Duis non iaculis lorem. Ut quis lectus vitae lorem imperdiet viverra. Suspendisse potenti.
     <p>
+      <form v-on:submit.prevent="save">
     <div id="mainForm">
       E-Mail Adresse: {{ person.email }}<br />
-      <form @submit.prevent>
         <p>Mein Name: <input v-model="person.name"></p>
         <p>
           Meine Rolle: <select v-model="person.my_role">
@@ -26,7 +26,6 @@
         </p>
         In dieser Rolle mache ich folgendes: <br />
         <textarea rows="6" cols="30" v-model="person.description"></textarea><br />
-      </form>
     </div>
 
     <div id="relations">
@@ -45,11 +44,12 @@
         Mit folgenden Themen: <br />
         <textarea rows="6" cols="30" name="contact_description" v-model="relation.contact_description"></textarea>
       </div>
-      <button class="button" @click="addRow">+ Kontakt hinzufügen</button>
+      <button class="button" type='button' @click="addRow">+ Kontakt hinzufügen</button>
     </div>
     <div>
-      <button v-bind:class="{ button: true, ok: dataSaved }" @click='save' type='submit'>Speichern</button>
+      <button v-bind:class="{ button: true, ok: dataSaved }" type='submit'>Speichern</button>
     </div>
+      </form>
   </div>
 </template>
 
@@ -58,8 +58,6 @@ export default {
   name: "Person",
   data() {
     return {
-      dataSaved: false,
-      person: {},
       roles: [
         { text: "Coach", value: "coach" },
         { text: "Kantonsleiter/in", value: "kal" },
@@ -68,18 +66,28 @@ export default {
     };
   },
   created: function() {
-    this.$store.dispatch("getPersonFromDatabase").then(() => {
-      this.person = this.$store.getters.getPerson;
-    });
+    this.$store.dispatch("getPersonFromDatabase");
+  },
+  computed: {
+    dataSaved() {
+      return this.$store.getters.getDataSaved;
+    },
+    person: {
+      get() {
+        return this.$store.getters.getPerson;
+      },
+      set(person) {
+        this.$store.commit("setPerson", person);
+      }
+    }
   },
   methods: {
     addRow: function() {
       this.$store.dispatch("addRelation");
+      this.save();
     },
     save: function() {
-      return this.$store.dispatch("setPerson", this.person).then(() => {
-        this.dataSaved = true;
-      });
+      return this.$store.dispatch("savePersonToDatabase");
     }
   }
 };

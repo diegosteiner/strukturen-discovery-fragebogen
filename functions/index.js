@@ -19,7 +19,8 @@ const mailTransport = nodemailer.createTransport({
 exports.createUserFromRelation = functions.database.ref('/people/{personId}/relations/{relationId}').onWrite((event) => {
   const relation = event.data.val();
   const email = relation.contact_mail;
-  // console.log("Relation triggered: ", relation);
+  // const person = event.data.ref.parent
+  // console.log("Person triggered: ", person);
 
   return admin.auth().getUserByEmail(email)
     .then(function (userRecord) {
