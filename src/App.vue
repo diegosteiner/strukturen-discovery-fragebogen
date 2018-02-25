@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <person v-model="person"></person>
   </div>
 </template>

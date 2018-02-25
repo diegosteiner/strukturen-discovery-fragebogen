@@ -4,11 +4,11 @@
     Mail: {{ email }}<br />
 
     <form @submit.prevent='save'>
-      Name: <input v-model="name"><br />
-      Beschreibung: <textarea v-model="description" placeholder="description"></textarea><br />
+      Name: <input v-model="value.name"><br />
+      Beschreibung: <textarea v-model="value.description" placeholder="description"></textarea><br />
       Rolle: <select v-model="options">
-        <option v-for="(value, key) in options" :value="key">
-          {{value}}
+        <option v-for="(xvalue, key) in options" :value="key" :key="key">
+          {{xvalue}}
         </option>
       </select><br />
       <button type='submit'>save</button>
@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { db } from "../services/firebase";
+
 export default {
   name: "Person",
   props: ["value"],
@@ -39,8 +41,9 @@ export default {
   },
   methods: {
     save() {
-      alert(this.name);
-    }
+      this.$root.$firebaseRefs.person.set(this.value);
+    },
+    addRelationship() {}
   }
 };
 </script>
