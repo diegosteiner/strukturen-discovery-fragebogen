@@ -14,25 +14,27 @@
     </p>
     <form v-on:submit.prevent="save">
       <div id="mainForm">
-        E-Mail Adresse: {{ person.email }}<br />
-          <p>Mein Name: <input v-model="person.name"></p>
-          <p>
-            Meine Rolle: <select v-model="person.my_role">
-            <option v-for="role in roles" :value="role.value">
-                {{role.text}}
-              </option>
-            </select>
-            Andere: <input type="text" v-model="person.my_other_role" />
-          </p>
-          In dieser Rolle mache ich folgendes: <br />
-          <textarea rows="6" cols="30" v-model="person.description"></textarea><br />
+          <label>E-Mail Adresse: {{ person.email }}</label>
+
+          <label>Mein Name</label>
+          <input v-model="person.name">
+
+          <label>Meine Rolle</label>
+          <input type="text" name="role" v-model="person.my_role" list='roles' />
+          <datalist id="roles">
+            <option v-for="role in roles" :value="role.value">{{ role.text }}</option>
+          </datalist>
+
+          <label>In dieser Rolle mache ich folgendes</label>
+          <textarea rows="6" cols="30" v-model="person.description"></textarea>
       </div>
 
       <div id="relations">
         <h3>Ich habe Kontakt mit:</h3>
         <relation v-for="relation in person.relations" :relation='relation'></relation>
-        <button v-bind:class="{ button: true, ok: dataSaved }" type='submit'>Speichern</button>
+        <button class="button" type='button' @click="addRow">+ Kontakt hinzufügen</button>
       </div>
+      <button v-bind:class="{ button: true, ok: dataSaved }" type='submit'>Speichern</button>
     </form>
   </div>
 </template>
@@ -112,13 +114,23 @@ export default {
   animation-timing-function: linear;
 }
 
-textarea {
-  width: 100%;
+label {
+  margin: 1rem 0 0.5rem 0;
+  display: block;
+}
+
+input,
+select,
+button {
+  max-width: 480px;
 }
 
 input,
 select,
 textarea {
   border: 1px solid gray;
+  padding: 0.35rem;
+  display: block;
+  width: 100%;
 }
 </style>

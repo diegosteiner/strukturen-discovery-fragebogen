@@ -1,33 +1,35 @@
 
 <template>
   <div class="relation">
-    Name: <input type="text" name="contact" v-model="relation.contact"/><br />
-    E-Mail: <input type="text" name="contact_mail"  v-model="relation.contact_mail"/><br />
-    <p>
-      In der Rolle als: <select v-model="relation.role">
-      <option v-for="role in roles" :value="role.value">
-          {{role.text}}
-        </option>
-      </select>
-      Andere: <input type="text" v-model="relation.other_role" />
-    </p>
-    Mit folgenden Themen: <br />
+    <label>Name</label>
+    <input type="text" name="contact" v-model="relation.contact"/>
+
+    <label>E-Mail</label>
+    <input type="text" name="contact_mail"  v-model="relation.contact_mail"/>
+
+    <label>In der Rolle als</label>
+    <input type="text" name="role" v-model="relation.role" list='roles' />
+
+    <label>Mit folgenden Themen</label>
     <textarea rows="6" cols="30" name="contact_description" v-model="relation.contact_description"></textarea>
   </div>
 </template>
 
 <script>
+import Autocomplete from "v-autocomplete";
+
 export default {
   name: "Relation",
   props: ["relation"],
-  data() {
-    return {
-      roles: [
-        { text: "Coach", value: "coach" },
-        { text: "Kantonsleiter/in", value: "kal" },
-        { text: "Mitglied Kantonsleitung", value: "kalei" }
-      ]
-    };
+  components: {
+    autocomplete: Autocomplete
+  },
+  methods: {
+    getRoleLabel(item) {
+      if (item !== null) {
+        return item.name;
+      }
+    }
   }
 };
 </script>
