@@ -11,49 +11,35 @@
       sem, in mattis mi mi sed augue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
       Ut luctus pulvinar diam, luctus semper justo gravida sit amet. Praesent tempus enim quis volutpat rutrum.
       Mauris venenatis bibendum ante. Duis non iaculis lorem. Ut quis lectus vitae lorem imperdiet viverra. Suspendisse potenti.
-    <p>
-      <form v-on:submit.prevent="save">
-    <div id="mainForm">
-      E-Mail Adresse: {{ person.email }}<br />
-        <p>Mein Name: <input v-model="person.name"></p>
-        <p>
-          Meine Rolle: <select v-model="person.my_role">
-          <option v-for="role in roles" :value="role.value">
-              {{role.text}}
-            </option>
-          </select>
-          Andere: <input type="text" v-model="person.my_other_role" />
-        </p>
-        In dieser Rolle mache ich folgendes: <br />
-        <textarea rows="6" cols="30" v-model="person.description"></textarea><br />
-    </div>
-
-    <div id="relations">
-      <h3>Ich habe Kontakt mit:</h3>
-      <div v-for="relation in person.relations">
-        Name: <input type="text" name="contact" v-model="relation.contact"/><br />
-        E-Mail: <input type="text" name="contact_mail"  v-model="relation.contact_mail"/><br />
-        <p>
-          In der Rolle als: <select v-model="relation.role">
-          <option v-for="role in roles" :value="role.value">
-              {{role.text}}
-            </option>
-          </select>
-          Andere: <input type="text" v-model="relation.other_role" />
-        </p>
-        Mit folgenden Themen: <br />
-        <textarea rows="6" cols="30" name="contact_description" v-model="relation.contact_description"></textarea>
+    </p>
+    <form v-on:submit.prevent="save">
+      <div id="mainForm">
+        E-Mail Adresse: {{ person.email }}<br />
+          <p>Mein Name: <input v-model="person.name"></p>
+          <p>
+            Meine Rolle: <select v-model="person.my_role">
+            <option v-for="role in roles" :value="role.value">
+                {{role.text}}
+              </option>
+            </select>
+            Andere: <input type="text" v-model="person.my_other_role" />
+          </p>
+          In dieser Rolle mache ich folgendes: <br />
+          <textarea rows="6" cols="30" v-model="person.description"></textarea><br />
       </div>
-      <button class="button" type='button' @click="addRow">+ Kontakt hinzufügen</button>
-    </div>
-    <div>
-      <button v-bind:class="{ button: true, ok: dataSaved }" type='submit'>Speichern</button>
-    </div>
-      </form>
+
+      <div id="relations">
+        <h3>Ich habe Kontakt mit:</h3>
+        <relation v-for="relation in person.relations" :relation='relation'></relation>
+        <button v-bind:class="{ button: true, ok: dataSaved }" type='submit'>Speichern</button>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
+import Relation from "./Relation.vue";
+
 export default {
   name: "Person",
   data() {
@@ -64,6 +50,9 @@ export default {
         { text: "Mitglied Kantonsleitung", value: "kalei" }
       ]
     };
+  },
+  components: {
+    relation: Relation
   },
   created: function() {
     this.$store.dispatch("getPersonFromDatabase");
@@ -93,12 +82,6 @@ export default {
 };
 </script>
 <style>
-#relations div {
-  border: 1px solid rgb(15, 105, 175);
-  padding: 15px;
-  margin-top: 10px;
-}
-
 #mainForm {
   border: 2px solid rgb(15, 105, 175);
   padding: 15px;
