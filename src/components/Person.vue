@@ -6,11 +6,7 @@
       Mit dieser Umfrage möchten wir die Strukturen der Pfadi Züri besser kennenlernen und verstehen.
     </p>
     <p>
-      Bitte fülle deine Personalien sowie eine Beschreibung deiner Rolle aus
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras euismod, ipsum quis placerat pretium, libero justo tincidunt
-      sem, in mattis mi mi sed augue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-      Ut luctus pulvinar diam, luctus semper justo gravida sit amet. Praesent tempus enim quis volutpat rutrum.
-      Mauris venenatis bibendum ante. Duis non iaculis lorem. Ut quis lectus vitae lorem imperdiet viverra. Suspendisse potenti.
+      Bitte fülle deine Personalien sowie eine Beschreibung deiner Rolle aus.
     </p>
     <form v-on:submit.prevent="save">
       <div id="mainForm">
