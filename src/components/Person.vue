@@ -13,7 +13,7 @@
           <label>E-Mail Adresse: {{ person.email }}</label>
 
           <label>Mein Name</label>
-          <input v-model="person.name">
+          <input v-model="person.name" required>
 
           <label>Meine Rolle</label>
           <input type="text" name="role" v-model="person.my_role" list='roles' />
@@ -22,7 +22,7 @@
           </datalist>
 
           <label>In dieser Rolle mache ich folgendes</label>
-          <textarea rows="6" cols="30" v-model="person.description"></textarea>
+          <textarea rows="6" cols="30" v-model="person.description" required></textarea>
       </div>
 
       <div id="relations">

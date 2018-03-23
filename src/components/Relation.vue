@@ -1,16 +1,16 @@
 
 <template>
   <div class="relation">
-    <label>Name</label>
-    <input type="text" name="contact" v-model="relation.contact"/>
+    <label>Name*</label>
+    <input type="text" name="contact" v-model="relation.contact" required/>
 
-    <label>E-Mail</label>
-    <input type="text" name="contact_mail"  v-model="relation.contact_mail"/>
+    <label>E-Mail *</label>
+    <input type="email" name="contact_mail"  v-model="relation.contact_mail" required/>
 
-    <label>In der Rolle als</label>
-    <input type="text" name="role" v-model="relation.role" list='roles' />
+    <label>In der Rolle als *</label>
+    <input type="text" name="role" v-model="relation.role" list='roles' required/>
 
-    <label>Mit folgenden Themen</label>
+    <label>Mit folgenden Themen *</label>
     <textarea rows="6" cols="30" name="contact_description" v-model="relation.contact_description"></textarea>
   </div>
 </template>
