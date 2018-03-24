@@ -51,7 +51,7 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
           // });
 
           const mailOptions = {
-            from: '"Pfadi Zueri" <noreply@firebase.com>',
+            from: '"Pfadi Züri" <noreply@firebase.com>',
             to: userRecord.email,
           };
 

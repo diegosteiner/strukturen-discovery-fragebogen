@@ -11,24 +11,21 @@ export const store = new Vuex.Store({
   state: {
     user: null,
     dataSaved: false,
-    person: {
-      name: "",
-      email: "",
-      description: "",
-      my_role: "",
-      my_other_role: "",
-      relations: []
-    }
+    name: "",
+    email: "",
+    description: "",
+    role: "",
+    relations: []
   },
   getters: {
-    getUser: state => {
-      return state.user;
-    },
-    getPerson: state => {
-      return state.person
-    },
-    getDataSaved: state => {
-      return state.dataSaved
+    getPerson(state) {
+      return {
+        name: state.name,
+        email: state.email,
+        description: state.description,
+        my_role: state.role,
+        relations: state.relations,
+      }
     }
   },
   mutations: {
@@ -38,11 +35,27 @@ export const store = new Vuex.Store({
     setUser: (state, user) => {
       state.user = user;
       if (user != null) {
-        state.person.email = state.user.email;
+        state.email = state.user.email;
       }
     },
+    setName: (state, name) => {
+      state.name = name;
+      state.dataSaved = false;
+    },
+    setDescription: (state, description) => {
+      state.description = description;
+      state.dataSaved = false;
+    },
+    setRole: (state, role) => {
+      state.role = role;
+      state.dataSaved = false;
+    },
     setPerson: (state, person) => {
-      Object.assign(state.person, person)
+      state.name = person.name;
+      state.email = person.email;
+      state.description = person.description;
+      state.role = person.my_role;
+      state.relations = person.relations;
     },
     addRelation: state => {
       state.person.relations.push({
@@ -52,6 +65,7 @@ export const store = new Vuex.Store({
         role: "",
         other_role: ""
       });
+      state.dataSaved = false;
     },
   },
   actions: {
@@ -68,7 +82,7 @@ export const store = new Vuex.Store({
     getPersonFromDatabase: context => {
       return new Promise((resolve, reject) => {
 
-        let uid = context.getters.getUser.uid;
+        const uid = context.state.user.uid;
 
         if (!uid) { reject("No uid"); }
 
@@ -83,7 +97,7 @@ export const store = new Vuex.Store({
       });
     },
     savePersonToDatabase: context => {
-      const uid = context.getters.getUser.uid;
+      const uid = context.state.user.uid;
       if (!uid) { return false; }
       return db.ref('people/' + uid).set(context.getters.getPerson).then(() => {
         context.commit('setDataSaved', true);

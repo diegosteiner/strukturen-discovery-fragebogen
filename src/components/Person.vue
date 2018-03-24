@@ -8,35 +8,43 @@
     <p>
       Bitte fülle deine Personalien sowie eine Beschreibung deiner Rolle aus.
     </p>
-    <form v-on:submit.prevent="save">
+    <form v-on:submit.prevent="saveToDatabase">
       <div id="mainForm">
-          <label>E-Mail Adresse: {{ person.email }}</label>
+          <label>E-Mail Adresse: {{ email }}</label>
 
           <label>Mein Name</label>
-          <input v-model="person.name" required>
+          <input v-model="name" required>
 
           <label>Meine Rolle</label>
-          <input type="text" name="role" v-model="person.my_role" list='roles' />
+          <input type="text" name="role" v-model='role' list='roles' />
           <datalist id="roles">
-            <option v-for="role in roles" :value="role.value">{{ role.text }}</option>
+            <option v-for="r in roles" :value="r.value">{{ r.text }}</option>
           </datalist>
 
           <label>In dieser Rolle mache ich folgendes</label>
-          <textarea rows="6" cols="30" v-model="person.description" required></textarea>
+          <textarea rows="6" cols="30" v-model="description" required></textarea>
       </div>
+      <button v-bind:class="{ button: true, ok: dataSaved }" type='submit'>
+        <span v-show="dataSaved">Daten sind gespeichert</span>
+        <span v-show="!dataSaved">Daten speichern</span>
+      </button>
 
       <div id="relations">
         <h3>Ich habe Kontakt mit:</h3>
-        <relation v-for="relation in person.relations" :relation='relation'></relation>
+        <relation v-for="relation in relations" :relation='relation'></relation>
         <button class="button" type='button' @click="addRow">+ Kontakt hinzufügen</button>
       </div>
-      <button v-bind:class="{ button: true, ok: dataSaved }" type='submit'>Speichern</button>
+      <button v-bind:class="{ button: true, ok: dataSaved }" type='submit'>
+        <span v-show="dataSaved">Daten sind gespeichert</span>
+        <span v-show="!dataSaved">Daten speichern</span>
+      </button>
     </form>
   </div>
 </template>
 
 <script>
 import Relation from "./Relation.vue";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "Person",
@@ -56,24 +64,39 @@ export default {
     this.$store.dispatch("getPersonFromDatabase");
   },
   computed: {
-    dataSaved() {
-      return this.$store.getters.getDataSaved;
-    },
-    person: {
+    name: {
       get() {
-        return this.$store.getters.getPerson;
+        return this.$store.state.name;
       },
-      set(person) {
-        this.$store.commit("setPerson", person);
+      set(value) {
+        this.$store.commit("setName", value);
       }
-    }
+    },
+    role: {
+      get() {
+        return this.$store.state.role;
+      },
+      set(value) {
+        this.$store.commit("setRole", value);
+      }
+    },
+    description: {
+      get() {
+        return this.$store.state.description;
+      },
+      set(value) {
+        this.$store.commit("setDescription", value);
+      }
+    },
+
+    ...mapState(["email", "relations", "dataSaved"])
   },
   methods: {
     addRow: function() {
       this.$store.dispatch("addRelation");
       this.save();
     },
-    save: function() {
+    saveToDatabase: function() {
       return this.$store.dispatch("savePersonToDatabase");
     }
   }
