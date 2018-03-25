@@ -31,7 +31,7 @@
 
       <div id="relations">
         <h3>Ich habe Kontakt mit:</h3>
-        <relation v-for="relation in relations" :relation='relation'></relation>
+        <relation v-for="(relation, index) in relations" :key="index" :relation='relation'></relation>
         <button class="button" type='button' @click="addRow">+ Kontakt hinzufügen</button>
       </div>
       <button v-bind:class="{ button: true, ok: dataSaved }" type='submit'>
@@ -59,9 +59,6 @@ export default {
   },
   components: {
     relation: Relation
-  },
-  created: function() {
-    this.$store.dispatch("getPersonFromDatabase");
   },
   computed: {
     name: {
@@ -93,8 +90,7 @@ export default {
   },
   methods: {
     addRow: function() {
-      this.$store.dispatch("addRelation");
-      this.save();
+      this.$store.commit("addRelation");
     },
     saveToDatabase: function() {
       return this.$store.dispatch("savePersonToDatabase");

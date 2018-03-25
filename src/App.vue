@@ -8,13 +8,9 @@
 <script>
 import Person from "./components/Person";
 export default {
-  methods: {
-    setUser: function() {
-      this.$store.dispatch("setUser");
-    }
-  },
   created() {
-    this.setUser();
+    this.$store.dispatch("setUser");
+    this.$store.dispatch("getPersonFromDatabase");
   }
 };
 </script>

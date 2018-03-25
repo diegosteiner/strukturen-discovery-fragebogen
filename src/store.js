@@ -50,15 +50,23 @@ export const store = new Vuex.Store({
       state.role = role;
       state.dataSaved = false;
     },
+    setRelation: (state, index, relation) => {
+      // Vue.set(state.relations, index, relation)
+      state.dataSaved = false;
+    },
     setPerson: (state, person) => {
       state.name = person.name;
       state.email = person.email;
       state.description = person.description;
       state.role = person.my_role;
-      state.relations = person.relations;
+      state.relations = person.relations || [];
+    },
+    removeRelation: (state, index) => {
+      state.relations.splice(index, 1)
+      state.dataSaved = false;
     },
     addRelation: state => {
-      state.person.relations.push({
+      state.relations.push({
         contact_mail: "",
         contact: "",
         contact_description: "",
@@ -71,10 +79,6 @@ export const store = new Vuex.Store({
   actions: {
     setUser: context => {
       context.commit('setUser', Firebase.auth().currentUser);
-    },
-    setPerson: (context, person) => {
-      context.commit('setPerson', person);
-      context.commit('setDataSaved', false);
     },
     addRelation: ({ commit }) => {
       commit('addRelation');
@@ -89,6 +93,7 @@ export const store = new Vuex.Store({
         db.ref('people/' + uid).on("value", function (snapshot) {
           let val = snapshot.val();
           if (val != null) {
+            console.debug('Setting Person from Database')
             context.commit('setPerson', snapshot.val())
             context.commit('setDataSaved', true);
           }

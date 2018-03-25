@@ -2,33 +2,72 @@
 <template>
   <div class="relation">
     <label>Name*</label>
-    <input type="text" name="contact" v-model="relation.contact" required/>
+    <input type="text" name="contact" v-model="contact_name" required/>
 
     <label>E-Mail *</label>
-    <input type="email" name="contact_mail"  v-model="relation.contact_mail" required/>
+    <input type="email" name="contact_mail"  v-model="contact_email" required/>
 
     <label>In der Rolle als *</label>
-    <input type="text" name="role" v-model="relation.role" list='roles' required/>
+    <input type="text" name="role" v-model="contact_role" list='roles' required/>
 
     <label>Mit folgenden Themen *</label>
-    <textarea rows="6" cols="30" name="contact_description" v-model="relation.contact_description"></textarea>
+    <textarea rows="6" cols="30" name="contact_description" v-model="contact_description"></textarea>
+
+    <button class="button" v-on:click="removeRelation">Löschen</button>
   </div>
 </template>
 
 <script>
-import Autocomplete from "v-autocomplete";
-
 export default {
   name: "Relation",
   props: ["relation"],
-  components: {
-    autocomplete: Autocomplete
+  computed: {
+    key() {
+      return this.$vnode.key;
+    },
+    contact_name: {
+      get() {
+        return this.relation.contact;
+      },
+      set(value) {
+        this.relation.contact = value;
+        this.setRelation();
+      }
+    },
+    contact_email: {
+      get() {
+        return this.relation.contact_mail;
+      },
+      set(value) {
+        this.relation.contact_mail = value;
+        this.setRelation();
+      }
+    },
+    contact_role: {
+      get() {
+        return this.relation.role;
+      },
+      set(value) {
+        this.relation.role = value;
+        this.setRelation();
+      }
+    },
+    contact_description: {
+      get() {
+        return this.relation.description;
+      },
+      set(value) {
+        this.relation.description = value;
+        this.setRelation();
+      }
+    }
   },
   methods: {
-    getRoleLabel(item) {
-      if (item !== null) {
-        return item.name;
-      }
+    removeRelation() {
+      this.$store.commit("removeRelation", this.key);
+    },
+    setRelation() {
+      this.$store.commit("setRelation", this.key, this.relation);
     }
   }
 };
