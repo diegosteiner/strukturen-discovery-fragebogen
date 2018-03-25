@@ -1,19 +1,16 @@
 
 <template>
   <div class="relation">
-    <label>Name*</label>
-    <input type="text" name="contact" v-model="contact_name" required/>
-
-    <label>E-Mail *</label>
-    <input type="email" name="contact_mail"  v-model="contact_email" required/>
-
-    <label>In der Rolle als *</label>
-    <input type="text" name="role" v-model="contact_role" list='roles' required/>
+    <button class="destroy" v-on:click="removeRelation">×</button>
+    <div class='flex-row'>
+      <input class="flex-item" type="text" placeholder="Name *" name="contact" v-model="contact_name" required/>
+      <input class="flex-item" type="email" placeholder="Email *" name="contact_mail"  v-model="contact_email" required/>
+      <input class="flex-item" type="text" placeholder="Rolle dieser Person *" name="role" v-model="contact_role" list='roles' required/>
+    </div>
 
     <label>Mit folgenden Themen *</label>
     <textarea rows="6" cols="30" name="contact_description" v-model="contact_description"></textarea>
 
-    <button class="button" v-on:click="removeRelation">Löschen</button>
   </div>
 </template>
 
@@ -73,8 +70,33 @@ export default {
 };
 </script>
 <style>
+.flex-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 480px) {
+  .flex-row {
+    flex-direction: column;
+  }
+}
+
+.flex-item {
+  flex: 0 1 31%;
+  margin-bottom: 0.5rem;
+}
+
+button.destroy {
+  position: absolute;
+  border: none;
+  background: transparent;
+  top: 0;
+  right: 0;
+}
+
 .relation {
   border: 1px solid rgb(15, 105, 175);
+  position: relative;
   padding: 15px;
   margin-top: 10px;
 }
