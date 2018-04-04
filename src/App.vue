@@ -8,9 +8,10 @@
 <script>
 import Person from "./components/Person";
 export default {
-  created() {
+  created() {    
     this.$store.dispatch("setUser");
     this.$store.dispatch("getPersonFromDatabase");
+    this.$store.dispatch("getRolesFromDatabase");
   }
 };
 </script>

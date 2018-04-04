@@ -18,7 +18,7 @@
           <label>Meine Rolle</label>
           <input type="text" name="role" v-model='role' list='roles' />
           <datalist id="roles">
-            <option v-for="r in roles" :value="r.value">{{ r.text }}</option>
+            <option v-for="r in roles" :value="r">{{ r }}</option>
           </datalist>
 
           <label>In dieser Rolle mache ich folgendes</label>
@@ -48,15 +48,6 @@ import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "Person",
-  data() {
-    return {
-      roles: [
-        { text: "Coach", value: "coach" },
-        { text: "Kantonsleiter/in", value: "kal" },
-        { text: "Mitglied Kantonsleitung", value: "kalei" }
-      ]
-    };
-  },
   components: {
     relation: Relation
   },
@@ -85,7 +76,11 @@ export default {
         this.$store.commit("setDescription", value);
       }
     },
-
+    roles: {
+      get() {
+        return this.$store.getters.getRoles;
+      }
+    },
     ...mapState(["email", "relations", "dataSaved"])
   },
   methods: {
@@ -93,6 +88,7 @@ export default {
       this.$store.commit("addRelation");
     },
     saveToDatabase: function() {
+      this.$store.dispatch("saveRoleToDatabase");
       return this.$store.dispatch("savePersonToDatabase");
     }
   }
