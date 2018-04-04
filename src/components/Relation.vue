@@ -1,19 +1,29 @@
 
 <template>
   <div class="relation">
-    <label>Name*</label>
-    <input type="text" name="contact" v-model="contact_name" required/>
+    <div>
+      <label>Name *</label>
+      <input type="text" name="contact" v-model="contact_name" required/>
+    </div>
 
-    <label>E-Mail *</label>
-    <input type="email" name="contact_mail"  v-model="contact_email" required/>
+    <div>
+      <label>E-Mail *</label>
+      <input type="email" name="contact_mail"  v-model="contact_email" required/>
+    </div>
 
-    <label>In der Rolle als *</label>
-    <input type="text" name="role" v-model="contact_role" list='roles' required/>
+    <div>
+      <label>Rolle des Kontakts *</label>
+      <input type="text" name="role" v-model="contact_role" list='roles' required/>
+    </div>
 
-    <label>Mit folgenden Themen *</label>
-    <textarea rows="6" cols="30" name="contact_description" v-model="contact_description"></textarea>
+    <div>
+      <label>Mit folgenden Themen *</label>
+      <textarea rows="6" cols="30" name="contact_description" v-model="contact_description"></textarea>
+    </div>
 
-    <button class="button" v-on:click="removeRelation">Löschen</button>
+    <div>
+      <button class="button delete" v-on:click="removeRelation">Kontakt Löschen</button>
+    </div>
   </div>
 </template>
 
@@ -77,5 +87,12 @@ export default {
   border: 1px solid rgb(15, 105, 175);
   padding: 15px;
   margin-top: 10px;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.relation > div {
+  margin: 0 20px;
+
 }
 </style>

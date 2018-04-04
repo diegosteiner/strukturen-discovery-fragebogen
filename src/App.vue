@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <router-view/>
     <div id="logo"><img src="./assets/logo.png"></div>
+    <router-view/>
   </div>
 </template>
 
@@ -30,6 +30,7 @@ export default {
   margin: 5vw;
 }
 #logo {
-  text-align: right;
+  float: right;
 }
+
 </style>
