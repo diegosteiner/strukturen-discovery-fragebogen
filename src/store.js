@@ -15,7 +15,8 @@ export const store = new Vuex.Store({
     email: "",
     description: "",
     role: "",
-    relations: []
+    relations: [],
+    roles: []
   },
   getters: {
     getPerson(state) {
@@ -26,6 +27,9 @@ export const store = new Vuex.Store({
         my_role: state.role,
         relations: state.relations,
       }
+    },
+    getRoles(state) {
+      return state.roles
     }
   },
   mutations: {
@@ -65,6 +69,9 @@ export const store = new Vuex.Store({
       state.relations.splice(index, 1)
       state.dataSaved = false;
     },
+    setRoles: (state, roles) => {
+      Object.assign(state.roles, roles)
+    },
     addRelation: state => {
       state.relations.push({
         contact_mail: "",
@@ -101,12 +108,34 @@ export const store = new Vuex.Store({
         });
       });
     },
+    getRolesFromDatabase: context => {
+      return new Promise((resolve, reject) => {
+
+        db.ref('roles/').on("value", function (snapshot) {
+          let val = snapshot.val();
+          if (val != null) {
+            context.commit('setRoles', snapshot.val())
+          }
+          resolve();
+        });
+      });
+    },
     savePersonToDatabase: context => {
       const uid = context.state.user.uid;
       if (!uid) { return false; }
       return db.ref('people/' + uid).set(context.getters.getPerson).then(() => {
         context.commit('setDataSaved', true);
       });
+    },
+    saveRoleToDatabase: context => {
+      const roles = context.getters.getPerson.relations.map((val)=>{return val.role});
+      const persistedRoles = context.getters.getRoles;
+      const b = roles.filter(e=> {
+        return persistedRoles.indexOf(e) == -1
+      });
+      if (b.length > 0) {
+        return db.ref('roles/').set(persistedRoles.concat(b))
+      }
     }
   }
 });

@@ -1,16 +1,17 @@
 <template>
   <div id="app">
-    <router-view/>
     <div id="logo"><img src="./assets/logo.png"></div>
+    <router-view/>
   </div>
 </template>
 
 <script>
 import Person from "./components/Person";
 export default {
-  created() {
+  created() {    
     this.$store.dispatch("setUser");
     this.$store.dispatch("getPersonFromDatabase");
+    this.$store.dispatch("getRolesFromDatabase");
   }
 };
 </script>
@@ -29,6 +30,7 @@ export default {
   margin: 5vw;
 }
 #logo {
-  text-align: right;
+  float: right;
 }
+
 </style>

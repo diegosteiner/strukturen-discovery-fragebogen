@@ -1,16 +1,29 @@
 
 <template>
   <div class="relation">
-    <button class="destroy" v-on:click="removeRelation">×</button>
-    <div class='flex-row'>
-      <input class="flex-item" type="text" placeholder="Name *" name="contact" v-model="contact_name" required/>
-      <input class="flex-item" type="email" placeholder="Email *" name="contact_mail"  v-model="contact_email" required/>
-      <input class="flex-item" type="text" placeholder="Rolle dieser Person *" name="role" v-model="contact_role" list='roles' required/>
+    <div>
+      <label>Name *</label>
+      <input type="text" name="contact" v-model="contact_name" required/>
     </div>
 
-    <label>Mit folgenden Themen *</label>
-    <textarea rows="6" cols="30" name="contact_description" v-model="contact_description"></textarea>
+    <div>
+      <label>E-Mail *</label>
+      <input type="email" name="contact_mail"  v-model="contact_email" required/>
+    </div>
 
+    <div>
+      <label>Rolle des Kontakts *</label>
+      <input type="text" name="role" v-model="contact_role" list='roles' required/>
+    </div>
+
+    <div>
+      <label>Mit folgenden Themen *</label>
+      <textarea rows="6" cols="30" name="contact_description" v-model="contact_description"></textarea>
+    </div>
+
+    <div>
+      <button class="button delete" v-on:click="removeRelation">Kontakt Löschen</button>
+    </div>
   </div>
 </template>
 
@@ -99,5 +112,11 @@ button.destroy {
   position: relative;
   padding: 15px;
   margin-top: 10px;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.relation > div {
+  margin: 0 20px;
 }
 </style>

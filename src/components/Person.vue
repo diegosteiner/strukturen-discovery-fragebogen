@@ -3,11 +3,30 @@
   <div>
     <h1>Umfrage Strukturen Pfadi Züri</h1>
     <p>
-      Mit dieser Umfrage möchten wir die Strukturen der Pfadi Züri besser kennenlernen und verstehen.
+      Wir möchten den Aufbau unseres Kantonalverbandes besser verstehen und wollen wissen wer warum wie mit wem in Kontakt steht.
+      <br />Und dafür benötigen wir deine Hilfe! Bitte fülle diesen Fragebogen möglichst genau aus (dauert etwa 10min)
     </p>
     <p>
-      Bitte fülle deine Personalien sowie eine Beschreibung deiner Rolle aus.
+      <h3>Mache folgendes:</h3>
+      <ol>
+        <li>Fülle deine Personalien sowie eine Beschreibung deiner Rolle aus.</li>
+        <li>Füge für jeden Kontakt den du (in der Pfadi) pflegst eine Relation hinzu</li>
+        Pro Kontakt:
+        <li>Fülle den Namen des Kontakts aus (am liebsten den Pfadinamen)</li>
+        <li>Fülle die Mail-Adresse aus (bitte keine Verteiler-Adressen verwenden)</li>
+        <li>Sag uns was die Rolle des Kontaktes ist. (Wenn die Rolle noch nicht im Dropdown vorhanden ist, schreib die Bezeichnung einfach ins Feld)</li>
+        <li>Beschreib mit einigen Stichworten was die Zusammenarbeit mit diesem Kontakt beinhaltet</li>
+      </ol>
+      <h3>Wichtig dabei:</h3>
+      <ul>
+        <li>nur Kontakte innerhalb der Pfadi eintragen (nicht zur Gemeinde oder sonst extern)</li>
+        <li>keine Verteiler-Mailadressen verwenden, nur persönliche</li>
+        <li>Speichere das Formular zwischendurch ab (es kann beliebig oft gespeichert werden)</li>
+        <li>Du siehst anhand des Speicher-Buttons ob du noch ungespeicherte Änderungen im Formular hast</li>
+      </ul>
     </p>
+    <hr/>
+    <h2>Ich bin</h2>
     <form v-on:submit.prevent="saveToDatabase">
       <div id="mainForm">
           <label>E-Mail Adresse: {{ email }}</label>
@@ -18,7 +37,7 @@
           <label>Meine Rolle</label>
           <input type="text" name="role" v-model='role' list='roles' />
           <datalist id="roles">
-            <option v-for="r in roles" :value="r.value">{{ r.text }}</option>
+            <option v-for="r in roles" :value="r">{{ r }}</option>
           </datalist>
 
           <label>In dieser Rolle mache ich folgendes</label>
@@ -48,15 +67,6 @@ import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "Person",
-  data() {
-    return {
-      roles: [
-        { text: "Coach", value: "coach" },
-        { text: "Kantonsleiter/in", value: "kal" },
-        { text: "Mitglied Kantonsleitung", value: "kalei" }
-      ]
-    };
-  },
   components: {
     relation: Relation
   },
@@ -85,7 +95,11 @@ export default {
         this.$store.commit("setDescription", value);
       }
     },
-
+    roles: {
+      get() {
+        return this.$store.getters.getRoles;
+      }
+    },
     ...mapState(["email", "relations", "dataSaved"])
   },
   methods: {
@@ -93,6 +107,7 @@ export default {
       this.$store.commit("addRelation");
     },
     saveToDatabase: function() {
+      this.$store.dispatch("saveRoleToDatabase");
       return this.$store.dispatch("savePersonToDatabase");
     }
   }
@@ -117,11 +132,17 @@ export default {
 }
 
 .button {
-  height: 40px;
+  height: 35px;
   background-color: rgb(15, 105, 175);
   color: white;
   border: none;
   margin-top: 10px;
+  border-radius: 10px;
+}
+
+.delete {
+  border: 2px solid #cc0000;
+  background-color: rgba(15, 105, 175, .7);
 }
 
 .ok {
