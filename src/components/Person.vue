@@ -32,7 +32,7 @@
           <label>Mein Name *</label>
           <input v-model="name" required>
 
-          <label>Weitere E-Mail Addressen: </label>
+          <label>Weitere E-Mail Addressen, die du benutzt: </label>
           <textarea rows="6" cols="30" v-model="moreEmails"></textarea>
 
           <!-- <label>Meine Rolle *</label>

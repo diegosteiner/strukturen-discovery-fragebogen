@@ -132,7 +132,7 @@ export const store = new Vuex.Store({
     savePersonToDatabase: context => {
       const uid = context.state.user.uid;
       if (!uid) { return false; }
-      return db.ref('people/' + uid).set(context.getters.getPerson).then(() => {
+      return db.ref('people/' + uid).update(context.getters.getPerson).then(() => {
         context.commit('setDataSaved', true);
       });
     },

@@ -31,7 +31,7 @@
 
       <div class='flex-item'>
         <label>Beschreibung</label>
-        <textarea rows="6" cols="30" name="contact_description" v-model="contact_description"></textarea>
+        <textarea rows="3" cols="30" name="contact_description" v-model="contact_description"></textarea>
       </div>
     </div>
 
