@@ -1,29 +1,41 @@
 
 <template>
   <div class="relation">
-    <div>
-      <label>Name *</label>
-      <input type="text" name="contact" v-model="contact_name" required/>
+    <div class='flex-row'>
+      <div class='flex-item'>
+        <label>Name *</label>
+        <input type="text" name="contact" v-model="contact_name" required/>
+      </div>
+
+      <div class='flex-item'>
+        <label>E-Mail *</label>
+        <input type="email" name="contact_mail"  v-model="contact_email" required/>
+      </div>
+
+      <div class='flex-item'>
+        <label>Rolle des Kontakts *</label>
+        <v-select taggable v-model="contact_role" :options="roles"></v-select>
+      </div>
     </div>
 
-    <div>
-      <label>E-Mail *</label>
-      <input type="email" name="contact_mail"  v-model="contact_email" required/>
+    <div class='flex-row'>
+      <div class='flex-item'>
+        <label>Kontaktfrequenz: {{ frequency_label }}</label>
+        <input type="range" name="frequency" v-model="contact_frequency" min="0" :max="frequency_labels.length - 1" />
+      </div>
+
+      <div class='flex-item'>
+        <label>Mit folgenden Themen *</label>
+        <v-select taggable multiple v-model="contact_topics" :options="topics"></v-select>
+      </div>
+
+      <div class='flex-item'>
+        <label>Beschreibung</label>
+        <textarea rows="6" cols="30" name="contact_description" v-model="contact_description"></textarea>
+      </div>
     </div>
 
-    <div>
-      <label>Rolle des Kontakts *</label>
-      <input type="text" name="role" v-model="contact_role" list='roles' required/>
-    </div>
-
-    <div>
-      <label>Mit folgenden Themen *</label>
-      <textarea rows="6" cols="30" name="contact_description" v-model="contact_description"></textarea>
-    </div>
-
-    <div>
       <button class="button delete" v-on:click="removeRelation">Kontakt Löschen</button>
-    </div>
   </div>
 </template>
 
@@ -32,6 +44,27 @@ export default {
   name: "Relation",
   props: ["relation"],
   computed: {
+    frequency_labels() {
+      return [
+        "taglich",
+        "mehrmals pro Woche",
+        "wöchentlich",
+        "mehrmals pro Monat",
+        "monatlich",
+        "mehrmals pro Jahr",
+        "jährlich"
+      ];
+    },
+    frequency_label() {
+      return this.frequency_labels[this.contact_frequency];
+    },
+    topics() {
+      // return this.$store.getters.getTopics;
+      return ["foo", "bar"];
+    },
+    roles() {
+      return this.$store.getters.getRoles;
+    },
     key() {
       return this.$vnode.key;
     },
@@ -41,6 +74,15 @@ export default {
       },
       set(value) {
         this.relation.contact = value;
+        this.setRelation();
+      }
+    },
+    contact_frequency: {
+      get() {
+        return this.relation.contact_frequency || 0;
+      },
+      set(value) {
+        this.$set(this.relation, "contact_frequency", value);
         this.setRelation();
       }
     },
@@ -59,6 +101,15 @@ export default {
       },
       set(value) {
         this.relation.role = value;
+        this.setRelation();
+      }
+    },
+    contact_topics: {
+      get() {
+        return this.relation.topics;
+      },
+      set(value) {
+        this.relation.topics = value;
         this.setRelation();
       }
     },
@@ -85,7 +136,9 @@ export default {
 <style>
 .flex-row {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
+  margin: -10px;
 }
 
 @media only screen and (max-width: 480px) {
@@ -95,8 +148,9 @@ export default {
 }
 
 .flex-item {
-  flex: 0 1 31%;
-  margin-bottom: 0.5rem;
+  flex: 1 1 31%;
+  /* margin-bottom: 0.5rem; */
+  margin: 10px;
 }
 
 button.destroy {
@@ -112,11 +166,5 @@ button.destroy {
   position: relative;
   padding: 15px;
   margin-top: 10px;
-  display: grid;
-  grid-template-columns: auto auto;
-}
-
-.relation > div {
-  margin: 0 20px;
 }
 </style>

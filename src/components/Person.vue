@@ -29,17 +29,17 @@
       <div id="mainForm">
           <label>E-Mail Adresse: {{ email }}</label>
 
-          <label>Mein Name</label>
+          <label>Mein Name *</label>
           <input v-model="name" required>
 
-          <label>Meine Rolle</label>
+          <label>Weitere E-Mail Addressen: </label>
+          <textarea rows="6" cols="30" v-model="moreEmails"></textarea>
+
+          <!-- <label>Meine Rolle *</label>
           <input type="text" name="role" v-model='role' list='roles' />
-          <datalist id="roles">
-            <option :key="r" v-for="r in roles" :value="r">{{ r }}</option>
-          </datalist>
 
           <label>In dieser Rolle mache ich folgendes</label>
-          <textarea rows="6" cols="30" v-model="description" required></textarea>
+          <textarea rows="6" cols="30" v-model="description" required></textarea> -->
       </div>
       <button v-bind:class="{ button: true, ok: dataSaved }" type='submit'>
         <span v-show="dataSaved">Daten sind gespeichert</span>
@@ -83,6 +83,14 @@ export default {
       },
       set(value) {
         this.$store.commit("setRole", value);
+      }
+    },
+    moreEmails: {
+      get() {
+        return this.$store.state.moreEmails;
+      },
+      set(value) {
+        this.$store.commit("setMoreEmails", value);
       }
     },
     description: {
@@ -148,13 +156,15 @@ export default {
 }
 
 label {
-  margin: 1rem 0 0.5rem 0;
+  margin: 0.5rem 0 0.25rem 0;
   display: block;
 }
 
 input,
 select,
-button {
+button,
+textarea,
+.v-select {
   max-width: 480px;
 }
 
@@ -166,5 +176,7 @@ textarea {
   display: block;
   width: 100%;
   box-sizing: border-box;
+  line-height: 24px;
+  border-color: #2c3e50;
 }
 </style>

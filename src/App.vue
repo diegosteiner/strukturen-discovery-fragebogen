@@ -8,7 +8,7 @@
 <script>
 import Person from "./components/Person";
 export default {
-  created() {    
+  created() {
     this.$store.dispatch("setUser");
     this.$store.dispatch("getPersonFromDatabase");
     this.$store.dispatch("getRolesFromDatabase");
@@ -33,4 +33,16 @@ export default {
   float: right;
 }
 
+.v-select {
+  font-family: "Meta", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+
+  font-size: 0.75rem !important;
+}
+.v-select .dropdown-toggle {
+  border-radius: 0px;
+  border-color: #2c3e50;
+}
 </style>

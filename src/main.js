@@ -9,9 +9,11 @@ import Firebase from 'firebase';
 import { db } from './services/firebase';
 import { store } from './store';
 import VueRouter from 'vue-router';
+import vSelect from 'vue-select'
 
 // Vue.use(VueFire);
 Vue.use(VueRouter);
+Vue.component('v-select', vSelect)
 
 const router = new VueRouter({
   routes: [{

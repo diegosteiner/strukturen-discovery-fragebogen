@@ -13,16 +13,19 @@ export const store = new Vuex.Store({
     dataSaved: false,
     name: "",
     email: "",
+    moreEmails: "",
     description: "",
     role: "",
     relations: [],
-    roles: []
+    roles: [],
+    topics: []
   },
   getters: {
     getPerson(state) {
       return {
         name: state.name,
         email: state.email,
+        moreEmails: state.moreEmails,
         description: state.description,
         my_role: state.role,
         relations: state.relations,
@@ -50,6 +53,11 @@ export const store = new Vuex.Store({
       state.description = description;
       state.dataSaved = false;
     },
+    setMoreEmails: (state, moreEmails) => {
+      console.log(moreEmails);
+      state.moreEmails = moreEmails;
+      state.dataSaved = false;
+    },
     setRole: (state, role) => {
       state.role = role;
       state.dataSaved = false;
@@ -61,6 +69,7 @@ export const store = new Vuex.Store({
     setPerson: (state, person) => {
       state.name = person.name;
       state.email = person.email;
+      state.moreEmails = person.moreEmails;
       state.description = person.description;
       state.role = person.my_role;
       state.relations = person.relations || [];
@@ -76,6 +85,7 @@ export const store = new Vuex.Store({
       state.relations.push({
         contact_mail: "",
         contact: "",
+        topics: "",
         contact_description: "",
         role: "",
         other_role: ""
@@ -100,7 +110,6 @@ export const store = new Vuex.Store({
         db.ref('people/' + uid).on("value", function (snapshot) {
           let val = snapshot.val();
           if (val != null) {
-            console.debug('Setting Person from Database')
             context.commit('setPerson', snapshot.val())
             context.commit('setDataSaved', true);
           }
@@ -128,9 +137,9 @@ export const store = new Vuex.Store({
       });
     },
     saveRoleToDatabase: context => {
-      const roles = context.getters.getPerson.relations.map((val)=>{return val.role});
+      const roles = context.getters.getPerson.relations.map((val) => { return val.role });
       const persistedRoles = context.getters.getRoles;
-      const b = roles.filter(e=> {
+      const b = roles.filter(e => {
         return persistedRoles.indexOf(e) == -1
       });
       if (b.length > 0) {
