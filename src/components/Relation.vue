@@ -35,7 +35,7 @@
       </div>
     </div>
 
-      <button class="button delete" v-on:click="removeRelation">Kontakt Löschen</button>
+      <button class="button delete" v-on:click="removeRelation">Kontakt ({{ contact_name }}) Löschen</button>
   </div>
 </template>
 
@@ -46,7 +46,7 @@ export default {
   computed: {
     frequency_labels() {
       return [
-        "taglich",
+        "täglich",
         "mehrmals pro Woche",
         "wöchentlich",
         "mehrmals pro Monat",
