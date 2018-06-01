@@ -28,14 +28,16 @@
         <label>Mit folgenden Themen *</label>
         <v-select taggable multiple v-model="contact_topics" :options="topics"></v-select>
       </div>
-
       <div class='flex-item'>
         <label>Beschreibung</label>
         <textarea rows="3" cols="30" name="contact_description" v-model="contact_description"></textarea>
       </div>
     </div>
 
-      <button class="button delete" v-on:click="removeRelation">Kontakt ({{ contact_name }}) Löschen</button>
+      <button class="button delete" v-on:click="removeRelation">
+        <img class="icon" src="../assets/trash.png"/>
+        Kontakt ({{ contact_name }}) Löschen
+      </button>
   </div>
 </template>
 

@@ -42,6 +42,7 @@
           <textarea rows="6" cols="30" v-model="description" required></textarea> -->
       </div>
       <button v-bind:class="{ button: true, ok: dataSaved }" type='submit'>
+        <img class="icon" src="../assets/save.png"/>
         <span v-show="dataSaved">Daten sind gespeichert</span>
         <span v-show="!dataSaved">Daten speichern</span>
       </button>
@@ -49,9 +50,12 @@
       <div id="relations">
         <h3>Ich habe Kontakt mit:</h3>
         <relation v-for="(relation, index) in relations" :key="index" :relation='relation'></relation>
-        <button class="button" type='button' @click="addRow">+ Kontakt hinzufügen</button>
+        <button class="button" type='button' @click="addRow">
+          <img class="icon" src="../assets/add.png"/>
+          Kontakt hinzufügen</button>
       </div>
       <button v-bind:class="{ button: true, ok: dataSaved }" type='submit'>
+        <img class="icon" src="../assets/save.png"/>
         <span v-show="dataSaved">Daten sind gespeichert</span>
         <span v-show="!dataSaved">Daten speichern</span>
       </button>
@@ -146,7 +150,7 @@ export default {
 }
 
 .delete {
-  border: 2px solid #cc0000;
+  border: 2px solid rgba(15, 105, 175);
   background-color: rgba(15, 105, 175, 0.7);
 }
 
@@ -178,5 +182,12 @@ textarea {
   box-sizing: border-box;
   line-height: 24px;
   border-color: #2c3e50;
+}
+
+.icon {
+  width: 12px;
+  margin: 1px;
+  padding-right: 2px;
+  float: left;
 }
 </style>
