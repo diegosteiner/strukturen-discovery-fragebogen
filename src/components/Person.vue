@@ -123,7 +123,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 #mainForm {
   border: 2px solid rgb(15, 105, 175);
   padding: 15px;

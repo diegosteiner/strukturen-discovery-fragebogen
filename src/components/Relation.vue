@@ -14,7 +14,9 @@
 
       <div class='flex-item'>
         <label>Rolle des Kontakts *</label>
-        <v-select taggable v-model="contact_role" :options="roles"></v-select>
+        <v-select taggable v-model="contact_role" :options="roles">
+          <slot name="no-options">Nichts passendes gefunden? Enter drücken um Neues hinzuzufügen.</slot>
+        </v-select>
       </div>
     </div>
 
@@ -26,7 +28,9 @@
 
       <div class='flex-item'>
         <label>Mit folgenden Themen *</label>
-        <v-select taggable multiple v-model="contact_topics" :options="topics"></v-select>
+        <v-select taggable multiple v-model="contact_topics" :options="topics">
+          <slot name="no-options">Nichts passendes gefunden? Enter drücken um Neues hinzuzufügen.</slot>
+        </v-select>
       </div>
       <div class='flex-item'>
         <label>Beschreibung</label>
