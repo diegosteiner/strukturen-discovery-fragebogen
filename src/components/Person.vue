@@ -123,7 +123,7 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style>
 #mainForm {
   border: 2px solid rgb(15, 105, 175);
   padding: 15px;
@@ -141,14 +141,6 @@ export default {
   }
 }
 
-.button {
-  height: 35px;
-  background-color: rgb(15, 105, 175);
-  color: white;
-  border: none;
-  margin-top: 10px;
-}
-
 .delete {
   border: 2px solid rgba(15, 105, 175);
   background-color: rgba(15, 105, 175, 0.7);
@@ -157,37 +149,5 @@ export default {
 .ok {
   animation: ok 1s 1;
   animation-timing-function: linear;
-}
-
-label {
-  margin: 0.5rem 0 0.25rem 0;
-  display: block;
-}
-
-input,
-select,
-button,
-textarea,
-.v-select {
-  max-width: 480px;
-}
-
-input,
-select,
-textarea {
-  border: 1px solid gray;
-  padding: 0.35rem;
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  line-height: 24px;
-  border-color: #2c3e50;
-}
-
-.icon {
-  width: 12px;
-  margin: 1px;
-  padding-right: 2px;
-  float: left;
 }
 </style>

@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <div id="logo"><img src="./assets/logo.png"></div>
-    <router-view/>
+    <main>
+      <router-view/>
+    </main>
   </div>
 </template>
 
@@ -13,7 +15,6 @@ export default {
     this.$store.dispatch("getPersonFromDatabase");
     this.$store.dispatch("getRolesFromDatabase");
     this.$store.dispatch("getTopicsFromDatabase");
-    
   }
 };
 </script>
@@ -31,8 +32,65 @@ export default {
   color: #2c3e50;
   margin: 5vw;
 }
+
+#app > main {
+  padding-top: 100px;
+}
+
+label {
+  margin: 0.5rem 0 0.25rem 0;
+  display: block;
+}
+
+input,
+select,
+button,
+textarea,
+.v-select {
+  max-width: 480px;
+}
+
+input,
+select,
+textarea {
+  border: 1px solid gray;
+  padding: 0.35rem;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  line-height: 24px;
+  border-color: #2c3e50;
+}
+
+input[type="checkbox"] {
+  display: inline-block;
+  width: initial;
+  border: none;
+}
+
+.icon {
+  width: 12px;
+  margin: 1px;
+  padding-right: 2px;
+  float: left;
+}
 #logo {
   float: right;
+}
+
+.lg {
+  font-size: 1.25rem;
+  padding: 1rem;
+  height: auto;
+}
+
+.button {
+  /* height: 35px; */
+  background-color: rgb(15, 105, 175);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  margin-top: 10px;
 }
 
 .v-select {
