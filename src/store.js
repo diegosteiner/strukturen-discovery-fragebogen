@@ -33,6 +33,9 @@ export const store = new Vuex.Store({
     },
     getRoles(state) {
       return state.roles
+    },
+    getTopics(state) {
+      return state.topics
     }
   },
   mutations: {
@@ -81,6 +84,9 @@ export const store = new Vuex.Store({
     setRoles: (state, roles) => {
       Object.assign(state.roles, roles)
     },
+    setTopics: (state, topics) => {
+      Object.assign(state.topics, topics)
+    },
     addRelation: state => {
       state.relations.push({
         contact_mail: "",
@@ -124,6 +130,21 @@ export const store = new Vuex.Store({
           let val = snapshot.val();
           if (val != null) {
             context.commit('setRoles', snapshot.val())
+          }
+          resolve();
+        });
+      });
+    },
+    getTopicsFromDatabase: context => {
+      console.log('1')
+      return new Promise((resolve, reject) => {
+        console.log('2')
+
+        db.ref('topics/').on("value", function (snapshot) {
+          console.log('3')
+          let val = snapshot.val();
+          if (val != null) {
+            context.commit('setTopics', snapshot.val())
           }
           resolve();
         });

@@ -61,8 +61,8 @@ export default {
       return this.frequency_labels[this.contact_frequency];
     },
     topics() {
-      // return this.$store.getters.getTopics;
-      return ["foo", "bar"];
+      return this.$store.getters.getTopics;
+      // return ["foo", "bar"];
     },
     roles() {
       return this.$store.getters.getRoles;

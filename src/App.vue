@@ -12,6 +12,8 @@ export default {
     this.$store.dispatch("setUser");
     this.$store.dispatch("getPersonFromDatabase");
     this.$store.dispatch("getRolesFromDatabase");
+    this.$store.dispatch("getTopicsFromDatabase");
+    
   }
 };
 </script>
