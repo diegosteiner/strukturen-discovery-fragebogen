@@ -15,8 +15,8 @@
       <div class='flex-item'>
         <label>Rolle des Kontakts *</label>
         <v-select taggable v-model="contact_role" :options="roles">
-          <span slot="no-options">Nichts passendes gefunden? Enter drücken um Neues hinzuzufügen.</span>
         </v-select>
+        <small class="help-text">Nichts passendes gefunden? Neue Rollen können mit Enter hinzugefügt werden.</small>
       </div>
     </div>
 
@@ -172,5 +172,10 @@ button.destroy {
   position: relative;
   padding: 15px;
   margin-top: 10px;
+}
+
+.help-text {
+  color: gray;
+  font-size: 0.7em;
 }
 </style>
