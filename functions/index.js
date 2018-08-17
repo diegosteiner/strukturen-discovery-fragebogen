@@ -55,7 +55,13 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
             to: userRecord.email,
           };
 
-          mailOptions.subject = 'Fülle jetzt die Umfrage zu den Strukturen innerhalb der Pfadi aus!'
+          mailOptions.subject = `
+            Hallo!
+            Du hast diese Email erhalten, da du mit jemanden aus dem Kantonalverband der Pfadi Züri Kontakt hast. Der Pfadi-Kanton-Zürich hat sich als Ziel gesetzt, die Strukturen innerhalb des Kantons zu erfassen. Mit Hilfe dieser Umfrage sollen alle Verbindungen erkannt und dokumentiert werden können vom Abteilungsleitenden bis auf Ebene Kantonalverband.  
+            Wir bitten dich dir für das Ausfüllen Zeit zu nehmen. Wenn du die Umfrage geöffnet hast erfährst du weitere Informationen wie das Ausfüllen funktioniert. Keine Angst – es ist nicht kompliziert!
+            Wir danken dir herzlich für deine Unterstützung!
+            Bei Fragen darfst du dich gerne an strukturumfrage@pfadizueri.ch wenden.
+          `
           mailOptions.text = `https://strukturen-fragebogen.firebaseapp.com/login?email=${email}&token=${token}`
 
           return mailTransport.sendMail(mailOptions)
