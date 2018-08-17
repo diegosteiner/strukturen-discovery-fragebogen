@@ -3,26 +3,26 @@
   <div>
     <h1>Umfrage Strukturen Pfadi Züri</h1>
     <p>
-      Wir möchten den Aufbau unseres Kantonalverbandes besser verstehen und wollen wissen wer warum wie mit wem in Kontakt steht.
-      <br />Und dafür benötigen wir deine Hilfe! Bitte fülle diesen Fragebogen möglichst genau aus (dauert etwa 10min)
+      Wir möchten den Aufbau unseres Kantonalverbandes (Pfadi Züri) besser verstehen. Daher möchten wir gerne wissen, wer warum und wie mit wem in Kontakt steht. Dafür benötigen wir deine Hilfe! Bitte füll diesen Fragebogen möglichst genau aus – vielen Dank! (Dauer ca. 10 Minuten)
     </p>
     <h3>Mache folgendes:</h3>
     <ol>
-      <li>Fülle deine Personalien sowie eine Beschreibung deiner Rolle aus.</li>
-      <li>Füge für jeden Kontakt den du (in der Pfadi) pflegst eine Relation hinzu</li>
-      Pro Kontakt:
+      <li>Fülle deine Personalien sowie eine Beschreibung deiner Rolle in der Pfadi Züri aus.</li>
+      <li>Füge für jeden Kontakt den du in der Pfadi Züri pflegst eine Beziehung (Relation) hinzu: 
       <li>Fülle den Namen des Kontakts aus (am liebsten den Pfadinamen)</li>
       <li>Fülle die Mail-Adresse aus (bitte keine Verteiler-Adressen verwenden)</li>
-      <li>Sag uns was die Rolle des Kontaktes ist. (Wenn die Rolle noch nicht im Dropdown vorhanden ist, schreib die Bezeichnung einfach ins Feld)</li>
+      <li>Sag uns was die Rolle des Kontaktes ist. (Wenn die Rolle noch nicht im Dropdown vorhanden ist, schreib die Bezeichnung einfach ins Feld und drücke «Enter»)</li>
       <li>Beschreib mit einigen Stichworten was die Zusammenarbeit mit diesem Kontakt beinhaltet</li>
     </ol>
     <h3>Wichtig dabei:</h3>
     <ul>
-      <li>nur Kontakte innerhalb der Pfadi eintragen (nicht zur Gemeinde oder sonst extern)</li>
+      <li>nur Kontakte innerhalb der Pfadi Züri eintragen (nicht zur Gemeinde oder sonst extern)</li>
       <li>keine Verteiler-Mailadressen verwenden, nur persönliche</li>
       <li>Speichere das Formular zwischendurch ab (es kann beliebig oft gespeichert werden)</li>
-      <li>Du siehst anhand des Speicher-Buttons ob du noch ungespeicherte Änderungen im Formular hast</li>
+      <li>Du siehst anhand des Speicher-Buttons ob du noch ungespeicherte Änderungen im Formular hast.</li>
     </ul>
+    <p>Liebe Grüsse euer Projekt-Team <br />
+    Bei Fragen: <a href="mailto:strukturumfrage@pfadizueri.ch">strukturumfrage@pfadizueri.ch</a></p>
     <hr/>
     <h2>Ich bin</h2>
     <form v-on:submit.prevent="saveToDatabase">
