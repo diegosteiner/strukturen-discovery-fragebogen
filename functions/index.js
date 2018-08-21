@@ -3,7 +3,7 @@ const admin = require('firebase-admin');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
-admin.initializeApp(functions.config().firebase);
+const firebaseApp = admin.initializeApp(functions.config().firebase);
 
 // Configure the email transport using the default SMTP transport and a GMail account.
 // For other types of transports such as Sendgrid see https://nodemailer.com/transports/
@@ -19,21 +19,22 @@ const mailTransport = nodemailer.createTransport({
 exports.createUserFromRelation = functions.database.ref('/people/{personId}/relations/{relationId}').onWrite((event) => {
   const relation = event.data.val();
   const email = relation.contact_mail;
-  // const person = event.data.ref.parent
-  // console.log("Person triggered: ", person);
+  const person = event.data.ref.parent.parent
+  console.log("Person triggered: ", person);
 
   return admin.auth().getUserByEmail(email)
-    .then(function (userRecord) {
+    .then((userRecord) => {
       // See the UserRecord reference doc for the contents of userRecord.
       // console.log("User exists: ", userRecord.toJSON());
       return false
     })
-    .catch(function (error) {
+    .catch((error)  => {
       const regex = /.+@(pfadizueri|korpslimmat|distrikt)\.ch/g;
 
       if (!regex.test(email)) { return false }
 
       const token = crypto.randomBytes(33).toString('hex');
+      console.log(token)
       return admin.auth().createUser({
         email: email,
         emailVerified: false,
@@ -44,6 +45,18 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
         disabled: false
       })
         .then(function (userRecord) {
+          console.log(userRecord);
+          var uid = userRecord.uid
+          var relation = {
+            contact: 'name',
+            contact_description: '',
+            contact_frequency: '1',
+            contact_mail: email,
+            description: '',
+            other_role: '',
+            role: ''
+          }
+          firebaseApp.database().ref('people/' + uid + '/relations').set(relation);
           // return admin.auth().sendPasswordResetEmail(email).then(function () {
           //   return true
           // }).catch(function (error) {
