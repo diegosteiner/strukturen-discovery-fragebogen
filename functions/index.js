@@ -16,53 +16,56 @@ const mailTransport = nodemailer.createTransport({
   },
 });
 
-function addPersonUnlessExists(uid, email) {
-  let person = firebaseApp.database().ref(`people/${uid}`)
-  person.once('value', (snapshot) => {
-    if (!snapshot.exists()) {
-      person.set({
-        email: email,
-        relations: {}
-      })
-    }
-  })
-  let relations = firebaseApp.database().ref(`people/${uid}`);
-}
+function addRelationUnlessExists(uid, email, adding_person) {
+  let added_person = firebaseApp.database().ref(`people/${uid}`)
 
-function addRelationUnlessExists(uid, person) {
-  if (person === undefined || uid === undefined) { return }
-  let relations = firebaseApp.database().ref(`people/${uid}`);
-
-  relations.once('value', (snapshot) => {
-    let relation_exists = snapshot.val().some((rel) => {
-      return rel.contact_mail === person.email;
-    });
-
-    if (!relation_exists) {
-      relations.push({
-        contact: person.name,
-        contact_description: '',
-        contact_frequency: '1',
-        contact_mail: person.email,
-        description: '',
-        other_role: '',
-        role: ''
+  if (added_person.exists()) {
+    let relations = firebaseApp.database().ref(`people/${uid}/relations`);
+    relations.once('value', (snapshot) => {
+      console.log(snapshot.val());
+      let relation_exists = snapshot.val().some((rel) => {
+        return rel.contact_mail === person.email;
       });
-      console.log(relations)
-    }
-  });
+
+      if (!relation_exists) {
+        relations.push({
+          contact: adding_person.name,
+          contact_description: '',
+          contact_frequency: '1',
+          contact_mail: adding_person.email,
+          description: '',
+          other_role: '',
+          role: ''
+        });
+      }
+    });
+  } else {
+    person.set({
+      email: email,
+      relations: {
+        0: {
+          contact: adding_person.name,
+          contact_description: '',
+          contact_frequency: '1',
+          contact_mail: adding_person.email,
+          description: '',
+          other_role: '',
+          role: ''
+        }
+      }
+    });
+  }
 }
 
 exports.createUserFromRelation = functions.database.ref('/people/{personId}/relations/{relationId}').onWrite((event) => {
   const relation = event.data.val();
   const email = relation.contact_mail;
-  const person = event.data.ref.parent.parent
-  console.log("Person triggered: ", person);
+  const adding_person = event.data.ref.parent.parent
+  console.log("Person triggered: ", adding_person);
 
   return admin.auth().getUserByEmail(email)
     .then((userRecord) => {
-      addPersonUnlessExists(userRecord.uid, person.email);
-      addRelationUnlessExists(userRecord.uid, person);
+      addRelationUnlessExists(userRecord.uid, userRecord.email, adding_person);
       return false
     })
     .catch((error) => {
@@ -81,8 +84,7 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
       })
         .then(function (userRecord) {
           console.log(userRecord);
-          addPersonUnlessExists(userRecord.uid, person.email);
-          addRelationUnlessExists(userRecord.uid, person);
+          addRelationUnlessExists(userRecord.uid, userRecord.email, adding_person);
 
           const mailOptions = {
             from: '"Pfadi Züri" <noreply@firebase.com>',
