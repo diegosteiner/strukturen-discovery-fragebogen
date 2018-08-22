@@ -16,24 +16,39 @@ const mailTransport = nodemailer.createTransport({
   },
 });
 
-function addRelationUnlessExists(uid, added_email) {
-  let relations = firebaseApp.database().ref(`people/${uid}/relations`);
+function addPersonUnlessExists(uid, email) {
+  let person = firebaseApp.database().ref(`people/${uid}`)
+  person.once('value', (snapshot) => {
+    if (!snapshot.exists()) {
+      person.set({
+        email: email,
+        relations: {}
+      })
+    }
+  })
+  let relations = firebaseApp.database().ref(`people/${uid}`);
+}
+
+function addRelationUnlessExists(uid, person) {
+  if (person === undefined || uid === undefined) { return }
+  let relations = firebaseApp.database().ref(`people/${uid}`);
 
   relations.once('value', (snapshot) => {
     let relation_exists = snapshot.val().some((rel) => {
-      return rel.contact_mail == added_email;
+      return rel.contact_mail === person.email;
     });
 
     if (!relation_exists) {
       relations.push({
-        contact: 'name',
+        contact: person.name,
         contact_description: '',
         contact_frequency: '1',
-        contact_mail: added_email,
+        contact_mail: person.email,
         description: '',
         other_role: '',
         role: ''
       });
+      console.log(relations)
     }
   });
 }
@@ -46,9 +61,7 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
 
   return admin.auth().getUserByEmail(email)
     .then((userRecord) => {
-      // See the UserRecord reference doc for the contents of userRecord.
-      // console.log("User exists: ", userRecord.toJSON());
-      addRelationUnlessExists(userRecord.uid, person.email);
+      addRelationUnlessExists(userRecord.uid, person);
       return false
     })
     .catch((error) => {
@@ -61,20 +74,13 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
       return admin.auth().createUser({
         email: email,
         emailVerified: false,
-        // phoneNumber: "+11234567890",
         password: token,
         displayName: token,
-        // photoURL: "http://www.example.com/12345678/photo.png",
         disabled: false
       })
         .then(function (userRecord) {
           console.log(userRecord);
-          addRelationUnlessExists(userRecord.uid, person.email);
-          // return admin.auth().sendPasswordResetEmail(email).then(function () {
-          //   return true
-          // }).catch(function (error) {
-          //   console.log("Error creating new user:", error);
-          // });
+          addRelationUnlessExists(userRecord.uid, person);
 
           const mailOptions = {
             from: '"Pfadi Züri" <noreply@firebase.com>',
