@@ -19,18 +19,22 @@ const mailTransport = nodemailer.createTransport({
 function addRelationUnlessExists(uid, email, adding_person) {
   var added_person_ref = firebaseApp.database().ref(`people/${uid}`)
   added_person_ref.once('value', (added_person) => {
-    console.log("Added Person: " + added_person);
 
     if (added_person.exists()) {
+      console.log("Added Person: " + added_person.val());
       let relations = added_person_ref.child('relations');
       relations.once('value', (snapshot) => {
-        console.log(snapshot.val());
+        relationSnapshot = snapshot.val()
         var relation_exists = false
-        snapshot.val().forEach((rel) => {
-          if (rel.contact_mail === added_person.email) {
-            relation_exists = true
+        for (var i in relationSnapshot) {
+          if (relationSnapshot.hasOwnProperty(i)) {
+            let rel = relationSnapshot[i];
+            console.log(rel.contact_mail + '===' + adding_person.email);
+            if (rel.contact_mail === adding_person.email) {
+              relation_exists = true
+            }
           }
-        })
+        }
 
         if (!relation_exists) {
           relations.push({
@@ -47,12 +51,16 @@ function addRelationUnlessExists(uid, email, adding_person) {
     } else {
       added_person_ref.set({
         email: email,
+        moreEmails: '',
+        name = '',
+        description = '',
+        role = '',
         relations: {
           0: {
-            contact: adding_person.name,
+            contact: adding_person.name || '',
             contact_description: '',
             contact_frequency: '1',
-            contact_mail: adding_person.email,
+            contact_mail: adding_person.email || '',
             description: '',
             other_role: '',
             role: ''
@@ -96,14 +104,14 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
               to: userRecord.email,
             };
 
-            mailOptions.subject = `
-            Hallo!
+            mailOptions.subject = `Fragebogen der Pfadi Züri`
+            mailOptions.text = `Hallo!
             Du hast diese Email erhalten, da du mit jemanden aus dem Kantonalverband der Pfadi Züri Kontakt hast. Der Pfadi-Kanton-Zürich hat sich als Ziel gesetzt, die Strukturen innerhalb des Kantons zu erfassen. Mit Hilfe dieser Umfrage sollen alle Verbindungen erkannt und dokumentiert werden können vom Abteilungsleitenden bis auf Ebene Kantonalverband.
             Wir bitten dich dir für das Ausfüllen Zeit zu nehmen. Wenn du die Umfrage geöffnet hast erfährst du weitere Informationen wie das Ausfüllen funktioniert. Keine Angst – es ist nicht kompliziert!
             Wir danken dir herzlich für deine Unterstützung!
             Bei Fragen darfst du dich gerne an strukturumfrage@pfadizueri.ch wenden.
-          `
-            mailOptions.text = `https://strukturen-fragebogen.firebaseapp.com/login?email=${email}&token=${token}`
+
+            https://strukturen-fragebogen.firebaseapp.com/login?email=${email}&token=${token}`
 
             return mailTransport.sendMail(mailOptions)
               .catch((error) => console.error('There was an error while sending the email:', error));
