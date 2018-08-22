@@ -61,6 +61,7 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
 
   return admin.auth().getUserByEmail(email)
     .then((userRecord) => {
+      addPersonUnlessExists(userRecord.uid, person.email);
       addRelationUnlessExists(userRecord.uid, person);
       return false
     })
@@ -80,6 +81,7 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
       })
         .then(function (userRecord) {
           console.log(userRecord);
+          addPersonUnlessExists(userRecord.uid, person.email);
           addRelationUnlessExists(userRecord.uid, person);
 
           const mailOptions = {
