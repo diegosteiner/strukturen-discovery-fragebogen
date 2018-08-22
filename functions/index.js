@@ -17,46 +17,50 @@ const mailTransport = nodemailer.createTransport({
 });
 
 function addRelationUnlessExists(uid, email, adding_person) {
-  console.log("Adding Person: " + adding_person);
-  let added_person = firebaseApp.database().ref(`people/${uid}`)
-  console.log("Added Person: " + added_person);
+  var added_person_ref = firebaseApp.database().ref(`people/${uid}`)
+  added_person_ref.once('value', (added_person) => {
+    console.log("Added Person: " + added_person);
 
-  if (added_person.exists()) {
-    let relations = firebaseApp.database().ref(`people/${uid}/relations`);
-    relations.once('value', (snapshot) => {
-      console.log(snapshot.val());
-      let relation_exists = snapshot.val().some((rel) => {
-        return rel.contact_mail === person.email;
-      });
+    if (added_person.exists()) {
+      let relations = added_person_ref.child('relations');
+      relations.once('value', (snapshot) => {
+        console.log(snapshot.val());
+        var relation_exists = false
+        snapshot.val().forEach((rel) => {
+          if (rel.contact_mail === added_person.email) {
+            relation_exists = true
+          }
+        })
 
-      if (!relation_exists) {
-        relations.push({
-          contact: adding_person.name,
-          contact_description: '',
-          contact_frequency: '1',
-          contact_mail: adding_person.email,
-          description: '',
-          other_role: '',
-          role: ''
-        });
-      }
-    });
-  } else {
-    added_person.set({
-      email: email,
-      relations: {
-        0: {
-          contact: adding_person.name,
-          contact_description: '',
-          contact_frequency: '1',
-          contact_mail: adding_person.email,
-          description: '',
-          other_role: '',
-          role: ''
+        if (!relation_exists) {
+          relations.push({
+            contact: adding_person.name || '',
+            contact_description: '',
+            contact_frequency: '1',
+            contact_mail: adding_person.email || '',
+            description: '',
+            other_role: '',
+            role: ''
+          });
         }
-      }
-    });
-  }
+      });
+    } else {
+      added_person_ref.set({
+        email: email,
+        relations: {
+          0: {
+            contact: adding_person.name,
+            contact_description: '',
+            contact_frequency: '1',
+            contact_mail: adding_person.email,
+            description: '',
+            other_role: '',
+            role: ''
+          }
+        }
+      });
+    }
+  });
 }
 
 exports.createUserFromRelation = functions.database.ref('/people/{personId}/relations/{relationId}').onWrite((event) => {
