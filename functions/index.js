@@ -52,15 +52,15 @@ function addRelationUnlessExists(uid, email, adding_person) {
       added_person_ref.set({
         email: email,
         moreEmails: '',
-        name = '',
-        description = '',
-        role = '',
+        name: '',
+        description: '',
+        my_role: '',
         relations: {
           0: {
-            contact: adding_person.name || '',
+            contact: (adding_person.name || ''),
             contact_description: '',
             contact_frequency: '1',
-            contact_mail: adding_person.email || '',
+            contact_mail: (adding_person.email || ''),
             description: '',
             other_role: '',
             role: ''
@@ -106,12 +106,12 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
 
             mailOptions.subject = `Fragebogen der Pfadi Züri`
             mailOptions.text = `Hallo!
-            Du hast diese Email erhalten, da du mit jemanden aus dem Kantonalverband der Pfadi Züri Kontakt hast. Der Pfadi-Kanton-Zürich hat sich als Ziel gesetzt, die Strukturen innerhalb des Kantons zu erfassen. Mit Hilfe dieser Umfrage sollen alle Verbindungen erkannt und dokumentiert werden können vom Abteilungsleitenden bis auf Ebene Kantonalverband.
-            Wir bitten dich dir für das Ausfüllen Zeit zu nehmen. Wenn du die Umfrage geöffnet hast erfährst du weitere Informationen wie das Ausfüllen funktioniert. Keine Angst – es ist nicht kompliziert!
-            Wir danken dir herzlich für deine Unterstützung!
-            Bei Fragen darfst du dich gerne an strukturumfrage@pfadizueri.ch wenden.
+Du hast diese Email erhalten, da du mit jemanden aus dem Kantonalverband der Pfadi Züri Kontakt hast. Der Pfadi-Kanton-Zürich hat sich als Ziel gesetzt, die Strukturen innerhalb des Kantons zu erfassen. Mit Hilfe dieser Umfrage sollen alle Verbindungen erkannt und dokumentiert werden können vom Abteilungsleitenden bis auf Ebene Kantonalverband.
+Wir bitten dich dir für das Ausfüllen Zeit zu nehmen. Wenn du die Umfrage geöffnet hast erfährst du weitere Informationen wie das Ausfüllen funktioniert. Keine Angst – es ist nicht kompliziert!
+Wir danken dir herzlich für deine Unterstützung!
+Bei Fragen darfst du dich gerne an strukturumfrage@pfadizueri.ch wenden.
 
-            https://strukturen-fragebogen.firebaseapp.com/login?email=${email}&token=${token}`
+https://strukturen-fragebogen.firebaseapp.com/login?email=${email}&token=${token}`
 
             return mailTransport.sendMail(mailOptions)
               .catch((error) => console.error('There was an error while sending the email:', error));
