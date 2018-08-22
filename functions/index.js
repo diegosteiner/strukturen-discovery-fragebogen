@@ -17,7 +17,9 @@ const mailTransport = nodemailer.createTransport({
 });
 
 function addRelationUnlessExists(uid, email, adding_person) {
+  console.log("Adding Person: " + adding_person);
   let added_person = firebaseApp.database().ref(`people/${uid}`)
+  console.log("Added Person: " + added_person);
 
   if (added_person.exists()) {
     let relations = firebaseApp.database().ref(`people/${uid}/relations`);
@@ -40,7 +42,7 @@ function addRelationUnlessExists(uid, email, adding_person) {
       }
     });
   } else {
-    person.set({
+    added_person.set({
       email: email,
       relations: {
         0: {
@@ -59,52 +61,52 @@ function addRelationUnlessExists(uid, email, adding_person) {
 
 exports.createUserFromRelation = functions.database.ref('/people/{personId}/relations/{relationId}').onWrite((event) => {
   const relation = event.data.val();
+  if (relation === null) { return false; }
   const email = relation.contact_mail;
-  const adding_person = event.data.ref.parent.parent
-  console.log("Person triggered: ", adding_person);
+  return event.data.ref.parent.parent.once('value').then((adding_person) => {
+    console.log(adding_person.val())
 
-  return admin.auth().getUserByEmail(email)
-    .then((userRecord) => {
-      addRelationUnlessExists(userRecord.uid, userRecord.email, adding_person);
-      return false
-    })
-    .catch((error) => {
-      const regex = /.+@(pfadizueri|korpslimmat|distrikt)\.ch/g;
-
-      if (!regex.test(email)) { return false }
-
-      const token = crypto.randomBytes(33).toString('hex');
-      console.log(token)
-      return admin.auth().createUser({
-        email: email,
-        emailVerified: false,
-        password: token,
-        displayName: token,
-        disabled: false
+    return admin.auth().getUserByEmail(email)
+      .then((userRecord) => {
+        addRelationUnlessExists(userRecord.uid, userRecord.email, adding_person.val());
+        return false
       })
-        .then(function (userRecord) {
-          console.log(userRecord);
-          addRelationUnlessExists(userRecord.uid, userRecord.email, adding_person);
+      .catch((error) => {
+        const regex = /.+@(pfadizueri|korpslimmat|distrikt)\.ch/g;
 
-          const mailOptions = {
-            from: '"Pfadi Züri" <noreply@firebase.com>',
-            to: userRecord.email,
-          };
+        if (!regex.test(email)) { return false }
 
-          mailOptions.subject = `
+        const token = crypto.randomBytes(33).toString('hex');
+        return admin.auth().createUser({
+          email: email,
+          emailVerified: false,
+          password: token,
+          displayName: token,
+          disabled: false
+        })
+          .then(function (userRecord) {
+            addRelationUnlessExists(userRecord.uid, userRecord.email, adding_person.val());
+
+            const mailOptions = {
+              from: '"Pfadi Züri" <noreply@firebase.com>',
+              to: userRecord.email,
+            };
+
+            mailOptions.subject = `
             Hallo!
             Du hast diese Email erhalten, da du mit jemanden aus dem Kantonalverband der Pfadi Züri Kontakt hast. Der Pfadi-Kanton-Zürich hat sich als Ziel gesetzt, die Strukturen innerhalb des Kantons zu erfassen. Mit Hilfe dieser Umfrage sollen alle Verbindungen erkannt und dokumentiert werden können vom Abteilungsleitenden bis auf Ebene Kantonalverband.
             Wir bitten dich dir für das Ausfüllen Zeit zu nehmen. Wenn du die Umfrage geöffnet hast erfährst du weitere Informationen wie das Ausfüllen funktioniert. Keine Angst – es ist nicht kompliziert!
             Wir danken dir herzlich für deine Unterstützung!
             Bei Fragen darfst du dich gerne an strukturumfrage@pfadizueri.ch wenden.
           `
-          mailOptions.text = `https://strukturen-fragebogen.firebaseapp.com/login?email=${email}&token=${token}`
+            mailOptions.text = `https://strukturen-fragebogen.firebaseapp.com/login?email=${email}&token=${token}`
 
-          return mailTransport.sendMail(mailOptions)
-            .catch((error) => console.error('There was an error while sending the email:', error));
-        })
-        .catch(function (error) {
-          console.log("Error creating new user:", error);
-        });
-    });
+            return mailTransport.sendMail(mailOptions)
+              .catch((error) => console.error('There was an error while sending the email:', error));
+          })
+          .catch(function (error) {
+            console.log("Error creating new user:", error);
+          });
+      });
+  });
 });
