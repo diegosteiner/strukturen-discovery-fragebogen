@@ -16,6 +16,28 @@ const mailTransport = nodemailer.createTransport({
   },
 });
 
+function addRelationUnlessExists(uid, added_email) {
+  let relations = firebaseApp.database().ref(`people/${uid}/relations`);
+
+  relations.once('value', (snapshot) => {
+    let relation_exists = snapshot.val().some((rel) => {
+      return rel.contact_mail == added_email;
+    });
+
+    if (!relation_exists) {
+      relations.push({
+        contact: 'name',
+        contact_description: '',
+        contact_frequency: '1',
+        contact_mail: added_email,
+        description: '',
+        other_role: '',
+        role: ''
+      });
+    }
+  });
+}
+
 exports.createUserFromRelation = functions.database.ref('/people/{personId}/relations/{relationId}').onWrite((event) => {
   const relation = event.data.val();
   const email = relation.contact_mail;
@@ -26,9 +48,10 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
     .then((userRecord) => {
       // See the UserRecord reference doc for the contents of userRecord.
       // console.log("User exists: ", userRecord.toJSON());
+      addRelationUnlessExists(userRecord.uid, person.email);
       return false
     })
-    .catch((error)  => {
+    .catch((error) => {
       const regex = /.+@(pfadizueri|korpslimmat|distrikt)\.ch/g;
 
       if (!regex.test(email)) { return false }
@@ -46,17 +69,7 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
       })
         .then(function (userRecord) {
           console.log(userRecord);
-          var uid = userRecord.uid
-          var relation = {
-            contact: 'name',
-            contact_description: '',
-            contact_frequency: '1',
-            contact_mail: email,
-            description: '',
-            other_role: '',
-            role: ''
-          }
-          firebaseApp.database().ref('people/' + uid + '/relations').set(relation);
+          addRelationUnlessExists(userRecord.uid, person.email);
           // return admin.auth().sendPasswordResetEmail(email).then(function () {
           //   return true
           // }).catch(function (error) {
@@ -70,7 +83,7 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
 
           mailOptions.subject = `
             Hallo!
-            Du hast diese Email erhalten, da du mit jemanden aus dem Kantonalverband der Pfadi Züri Kontakt hast. Der Pfadi-Kanton-Zürich hat sich als Ziel gesetzt, die Strukturen innerhalb des Kantons zu erfassen. Mit Hilfe dieser Umfrage sollen alle Verbindungen erkannt und dokumentiert werden können vom Abteilungsleitenden bis auf Ebene Kantonalverband.  
+            Du hast diese Email erhalten, da du mit jemanden aus dem Kantonalverband der Pfadi Züri Kontakt hast. Der Pfadi-Kanton-Zürich hat sich als Ziel gesetzt, die Strukturen innerhalb des Kantons zu erfassen. Mit Hilfe dieser Umfrage sollen alle Verbindungen erkannt und dokumentiert werden können vom Abteilungsleitenden bis auf Ebene Kantonalverband.
             Wir bitten dich dir für das Ausfüllen Zeit zu nehmen. Wenn du die Umfrage geöffnet hast erfährst du weitere Informationen wie das Ausfüllen funktioniert. Keine Angst – es ist nicht kompliziert!
             Wir danken dir herzlich für deine Unterstützung!
             Bei Fragen darfst du dich gerne an strukturumfrage@pfadizueri.ch wenden.
