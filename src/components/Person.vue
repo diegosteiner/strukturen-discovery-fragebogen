@@ -7,8 +7,8 @@
     </p>
     <h3>Mache folgendes:</h3>
     <ol>
-      <li>Fülle deine Personalien sowie eine Beschreibung deiner Rolle in der Pfadi Züri aus.</li>
-      <li>Füge für jeden Kontakt den du in der Pfadi Züri pflegst eine Beziehung (Relation) hinzu: 
+      <li>Fülle deine Personalien aus.</li>
+      <li>Füge für jeden Kontakt den du in der Pfadi Züri pflegst eine Beziehung hinzu
       <li>Fülle den Namen des Kontakts aus (am liebsten den Pfadinamen)</li>
       <li>Fülle die Mail-Adresse aus (bitte keine Verteiler-Adressen verwenden)</li>
       <li>Sag uns was die Rolle des Kontaktes ist. (Wenn die Rolle noch nicht im Dropdown vorhanden ist, schreib die Bezeichnung einfach ins Feld und drücke «Enter»)</li>
