@@ -1,5 +1,9 @@
 <template>
   <div>
+    <h1>Umfrage Strukturen Pfadi Züri</h1>
+    <p>
+      Wir möchten den Aufbau unseres Kantonalverbandes (Pfadi Züri) besser verstehen. Daher möchten wir gerne wissen, wer warum und wie mit wem in Kontakt steht. Dafür benötigen wir deine Hilfe! Bitte füll diesen Fragebogen möglichst genau aus – vielen Dank!
+    </p>
     <form @submit.prevent='signIn'>
       <label>Deine E-Mail Adresse</label>
       <input v-model="email">
@@ -9,6 +13,7 @@
           Ja, ich bin im Kanton Zürich in der Pfadi
       </label>
       <button type="submit" class="button lg">Fragebogen jetzt ausfüllen</button>
+      <br />(Dauert ca. 10 Minuten)
     </form>
   </div>
 </template>
