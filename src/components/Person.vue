@@ -69,11 +69,11 @@
           <img class="icon" src="../assets/save.png"/>
           <span v-show="dataSaved">Daten sind gespeichert</span>
           <span v-show="!dataSaved">Daten speichern</span>
+        </button><br />
+        <button class="button next" @click="thank_you" type='submit'>
+          <span >Fertig!</span>
         </button>
       </form>
-    <button class="button next" @click="thank_you" type='submit'>
-      <span >Fertig!</span>
-    </button>
     </div>
   </div>
 </template>
