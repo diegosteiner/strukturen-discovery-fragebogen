@@ -31,7 +31,8 @@
       Bei Fragen: <a href="mailto:strukturumfrage@pfadizueri.ch">strukturumfrage@pfadizueri.ch</a></p>
       <button id="start" class="button next" onClick="document.getElementsByClassName('fragebogen')[0].style.display = 'block'">
           <span >Los gehts!</span>
-      </button>
+      </button><br /><br />
+      <a href="faq">Häufige Fragen</a>
     <hr/>
     <div class="fragebogen">
       <h2>Ich bin</h2>

@@ -3,6 +3,7 @@
 import Vue from 'vue';
 import App from './App';
 import Login from './components/Login.vue';
+import Faq from './components/Faq.vue';
 import Person from './components/Person.vue';
 // import VueFire from 'vuefire';
 import Firebase from 'firebase';
@@ -25,6 +26,11 @@ const router = new VueRouter({
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/faq',
+    name: 'faq',
+    component: Faq
   }],
   mode: 'history'
 });
