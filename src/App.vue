@@ -12,9 +12,9 @@ import Person from "./components/Person";
 export default {
   created() {
     this.$store.dispatch("setUser");
-    this.$store.dispatch("getPersonFromDatabase");
     this.$store.dispatch("getRolesFromDatabase");
     this.$store.dispatch("getTopicsFromDatabase");
+    this.$store.dispatch("getPersonFromDatabase");
   }
 };
 </script>

@@ -125,7 +125,7 @@ export const store = new Vuex.Store({
     getRolesFromDatabase: context => {
       return new Promise((resolve, reject) => {
 
-        db.ref('roles/').on("value", function (snapshot) {
+        db.ref('roles/').once("value", function (snapshot) {
           let val = snapshot.val();
           if (val != null) {
             context.commit('setRoles', snapshot.val())
@@ -136,7 +136,7 @@ export const store = new Vuex.Store({
     },
     getTopicsFromDatabase: context => {
       return new Promise((resolve, reject) => {
-        db.ref('topics/').on("value", function (snapshot) {
+        db.ref('topics/').once("value", function (snapshot) {
           let topics = snapshot.val();
           if (topics != null) {
             context.commit('setTopics', topics);

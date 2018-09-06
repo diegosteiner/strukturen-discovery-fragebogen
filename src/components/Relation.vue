@@ -14,7 +14,7 @@
 
       <div class='flex-item'>
         <label>Rolle des Kontakts *</label>
-        <v-select taggable v-model="contact_role" :options="roles">
+        <v-select taggable v-model="contact_role" :options="$store.state.roles">
         </v-select>
         <small class="help-text">Nichts passendes gefunden? Neue Rollen können mit Enter hinzugefügt werden.</small>
       </div>
@@ -28,7 +28,7 @@
 
       <div class='flex-item'>
         <label>Mit folgenden Themen *</label>
-        <v-select taggable multiple v-model="contact_topics" :options="topics">
+        <v-select taggable multiple v-model="contact_topics" :options="$store.state.topics">
           <span slot="no-options">Nichts passendes gefunden? Enter drücken um Neues hinzuzufügen.</span>
         </v-select>
       </div>
@@ -63,13 +63,6 @@ export default {
     },
     frequency_label() {
       return this.frequency_labels[this.contact_frequency];
-    },
-    topics() {
-      return this.$store.getters.getTopics;
-      // return ["foo", "bar"];
-    },
-    roles() {
-      return this.$store.getters.getRoles;
     },
     key() {
       return this.$vnode.key;
