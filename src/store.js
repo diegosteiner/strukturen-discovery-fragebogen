@@ -113,7 +113,7 @@ export const store = new Vuex.Store({
 
         if (!uid) { reject("No uid"); }
 
-        db.ref('people/' + uid).on("value", function (snapshot) {
+        db.ref('people/' + uid).once("value", function (snapshot) {
           let val = snapshot.val();
           if (val != null) {
             context.commit('setPerson', snapshot.val())

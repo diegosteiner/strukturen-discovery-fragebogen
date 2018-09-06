@@ -8,6 +8,11 @@
       <label>Deine E-Mail Adresse</label>
       <input v-model="email">
       <br>
+      <div v-if='token === "" || token === undefined'>
+        <label>Passwort</label>
+        <input v-model="token">
+        <br>
+      </div>
       <label>
         <input type="checkbox" v-model="cantonal" required="required">
           Ja, ich bin im Kanton Zürich in der Pfadi
@@ -25,7 +30,7 @@ export default {
   data: function() {
     return {
       email: this.$route.query.email,
-      token: this.$route.query.token || "B7fdMbzftCukEjS9JKNOQfoBt8UAmsrQ3thx",
+      token: this.$route.query.token,
       cantonal: false
     };
   },
