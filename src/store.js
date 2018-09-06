@@ -28,7 +28,7 @@ export const store = new Vuex.Store({
         moreEmails: state.moreEmails,
         description: state.description,
         my_role: state.role,
-        relations: state.relations,
+        relations: state.relations
       }
     },
     getRoles(state) {
@@ -57,7 +57,6 @@ export const store = new Vuex.Store({
       state.dataSaved = false;
     },
     setMoreEmails: (state, moreEmails) => {
-      console.log(moreEmails);
       state.moreEmails = moreEmails;
       state.dataSaved = false;
     },
@@ -75,7 +74,7 @@ export const store = new Vuex.Store({
       state.moreEmails = person.moreEmails;
       state.description = person.description;
       state.role = person.my_role;
-      state.relations = person.relations || [];
+      state.relations = (person.relations || []).filter((r) => r !== undefined && r !== null);
     },
     removeRelation: (state, index) => {
       state.relations.splice(index, 1)
@@ -136,15 +135,11 @@ export const store = new Vuex.Store({
       });
     },
     getTopicsFromDatabase: context => {
-      console.log('1')
       return new Promise((resolve, reject) => {
-        console.log('2')
-
         db.ref('topics/').on("value", function (snapshot) {
-          console.log('3')
-          let val = snapshot.val();
-          if (val != null) {
-            context.commit('setTopics', snapshot.val())
+          let topics = snapshot.val();
+          if (topics != null) {
+            context.commit('setTopics', topics);
           }
           resolve();
         });

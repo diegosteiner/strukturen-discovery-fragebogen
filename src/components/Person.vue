@@ -29,12 +29,12 @@
     </div>
       <p>Liebe Grüsse euer Projekt-Team <br />
       Bei Fragen: <a href="mailto:strukturumfrage@pfadizueri.ch">strukturumfrage@pfadizueri.ch</a></p>
-      <button id="start" class="button next" onClick="document.getElementsByClassName('fragebogen')[0].style.display = 'block'">
+      <button id="start" class="button next" @click="startFragebogen">
           <span >Los gehts!</span>
       </button><br /><br />
       <a href="faq">Häufige Fragen</a>
     <hr/>
-    <div class="fragebogen">
+    <div id="fragebogen">
       <h2>Ich bin</h2>
       <form v-on:submit.prevent="saveToDatabase">
         <div id="mainForm">
@@ -135,11 +135,16 @@ export default {
       this.$store.dispatch("saveRoleToDatabase");
       return this.$store.dispatch("savePersonToDatabase");
     },
+    startFragebogen() {
+      let fragebogen = document.getElementById("fragebogen");
+      fragebogen.style.display = "block";
+      window.scrollTo(0, fragebogen.offsetTop);
+    },
     thank_you: function() {
-      document.getElementsByClassName('fragebogen')[0].style.display = 'none';
-      document.getElementById('blaa').style.display = 'none';
-      document.getElementById('start').style.display = 'none';
-      document.getElementsByClassName('thank_you')[0].style.display = 'block';
+      document.getElementById("fragebogen").style.display = "none";
+      document.getElementById("blaa").style.display = "none";
+      document.getElementById("start").style.display = "none";
+      document.getElementsByClassName("thank_you")[0].style.display = "block";
     }
   }
 };
@@ -154,7 +159,7 @@ export default {
   font-size: 1rem;
 }
 
-.fragebogen {
+#fragebogen {
   display: none;
 }
 
@@ -163,13 +168,12 @@ export default {
 }
 
 @media only screen and (min-width: 600px) {
-
   #blaa {
-  display: flex;
+    display: flex;
   }
 
   #schritt2 ul {
-      padding-left: 20px;
+    padding-left: 20px;
   }
 
   ol {
