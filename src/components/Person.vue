@@ -167,6 +167,15 @@ export default {
   display: none;
 }
 
+#schritt2 {
+  padding: 0 5px;
+  border: 1px solid;
+}
+
+#schritt2 ul {
+  padding-left: 15px;
+}
+
 @media only screen and (min-width: 600px) {
   #blaa {
     display: flex;
