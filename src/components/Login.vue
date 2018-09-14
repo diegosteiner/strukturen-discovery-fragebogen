@@ -1,5 +1,5 @@
 <template>
-  <div v-if='relation'>
+  <div>
     <h1>Umfrage Strukturen Pfadi Züri</h1>
     <p>
       Wir möchten den Aufbau unseres Kantonalverbandes (Pfadi Züri) besser verstehen. Daher möchten wir gerne wissen, wer warum und wie mit wem in Kontakt steht. Dafür benötigen wir deine Hilfe! Bitte füll diesen Fragebogen möglichst genau aus – vielen Dank!
