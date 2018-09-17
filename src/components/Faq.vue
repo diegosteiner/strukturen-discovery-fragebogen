@@ -14,8 +14,10 @@
       Das Projektteam besteht aus Vertretern von verschiedenen Gremien (Projektleiterin Salsa Kantonsleitung Pfadi Züri, Kon-Tiki Region Hochwacht, Filou Distrikt St. Georg, Happy Region Winterthur, Snoopy Korps Pfadi am Pfannenstil / AuRe 3, Bulbo Kantons-leitung Pfadi Züri, Carfii Kantonsleitung Pfadi Züri, Folletta Kantonsleitung Pfadi Züri, Dix Vorstand Pfadi Züri, Zebra Vorstand Pfadi Züri, Baixa Vorstand Pfadi Züri).</li>
       <li><strong>An wen kann ich mich bei Fragen wenden?</strong><br/>
       Bei Fragen kannst du dich jederzeit an strukturumfrage@pfadizueri.ch wenden.</li>
-
-
+      <li><strong>Was passiert wenn ich eine Person eintrage?</strong><br/>
+      Falls noch keine Person mit dieser Email-Addresse existiert, wird das Einladungsemail auch für diese Person verschickt.</li>
+      <li><strong>Was muss ich tun, wenn ich mit einer Person in mehreren Rollen kontakt habe?</strong><br/>
+      Wenn du mit derselben Person in mehreren Rollen kontakt hast, musst du diese Person auch mehrmals eintragen.</li>
 
     </ul>
       Vielen Dank für deine Mitarbeit bei diesem Projekt!<br />
@@ -28,8 +30,12 @@
 <script>
 import Firebase from "firebase";
 
-export default {
-  methods: {
-  }
-};
+export default {};
 </script>
+
+<style>
+li {
+  margin-bottom: 1rem;
+}
+</style>
+
