@@ -11,10 +11,20 @@
 import Person from "./components/Person";
 export default {
   created() {
-    this.$store.dispatch("setUser");
-    this.$store.dispatch("getRolesFromDatabase");
-    this.$store.dispatch("getTopicsFromDatabase");
-    this.$store.dispatch("getPersonFromDatabase");
+    this.$store
+      .dispatch("setUser")
+      .then(() => {
+        return Promise.all([
+          this.$store.dispatch("getRolesFromDatabase"),
+          this.$store.dispatch("getTopicsFromDatabase")
+        ]);
+      })
+      .then(() => {
+        return this.$store.dispatch("getPersonFromDatabase");
+      })
+      .catch(reason => {
+        console.log(reason);
+      });
   }
 };
 </script>

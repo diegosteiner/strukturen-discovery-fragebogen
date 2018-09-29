@@ -74,7 +74,9 @@ export const store = new Vuex.Store({
       state.moreEmails = person.moreEmails;
       state.description = person.description;
       state.role = person.my_role;
-      state.relations = (person.relations || []).filter((r) => r !== undefined && r !== null);
+      // person.relations is a {}
+      const relations = (Object.values(person.relations || {}))
+      state.relations = relations.filter((r) => r !== undefined && r !== null);
     },
     removeRelation: (state, index) => {
       state.relations.splice(index, 1)
@@ -108,7 +110,7 @@ export const store = new Vuex.Store({
     getPersonFromDatabase: context => {
       return new Promise((resolve, reject) => {
 
-        const uid = context.state.user.uid;
+        const uid = context.state.user && context.state.user.uid;
 
         if (!uid) { reject("No uid"); }
 
