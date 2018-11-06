@@ -4,17 +4,7 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
 const firebaseApp = admin.initializeApp(functions.config().firebase);
-
-// Configure the email transport using the default SMTP transport and a GMail account.
-// For other types of transports such as Sendgrid see https://nodemailer.com/transports/
-// TODO: Configure the `gmail.email` and `gmail.password` Google Cloud environment variables.
-const mailTransport = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: functions.config().gmail.email,
-    pass: functions.config().gmail.password,
-  },
-});
+const mailTransport = nodemailer.createTransport(functions.config().smtp.url);
 
 function addRelationUnlessExists(uid, email, adding_person) {
   var added_person_ref = firebaseApp.database().ref(`people/${uid}`)
@@ -101,14 +91,14 @@ exports.createUserFromRelation = functions.database.ref('/people/{personId}/rela
             addRelationUnlessExists(userRecord.uid, userRecord.email, adding_person.val());
 
             const mailOptions = {
-              from: '"Pfadi Züri" <noreply@firebase.com>',
+              from: '"Pfadi Züri" <struktur@pfadizueri.ch>',
               to: userRecord.email,
             };
 
             mailOptions.subject = `Fragebogen der Pfadi Züri`
             mailOptions.text = `Hallo!
 
-Du hast diese Email erhalten, da du mit jemanden innerhalb des Kantonalverbands von Zürich Kontakt hast. Die Pfadi Züri hat sich als Ziel gesetzt, die Strukturen innerhalb des Kantons zu erfassen. Mit Hilfe dieser Umfrage sollen alle Verbindungen erkannt und dokumentiert werden können, vom Abteilungsleitenden bis zum Kantonsleitenden.
+Du hast diese Einladung erhalten, da du mit jemanden innerhalb des Kantonalverbands von Zürich Kontakt hast. Die Pfadi Züri hat sich als Ziel gesetzt, die Strukturen innerhalb des Kantons zu erfassen. Mit Hilfe dieser Umfrage sollen alle Verbindungen erkannt und dokumentiert werden können, vom Abteilungsleitenden bis zum Kantonsleitenden.
 Wir bitten dich dir für das Ausfüllen Zeit zu nehmen. Wenn du die Umfrage geöffnet hast erfährst du weitere Informationen wie das Ausfüllen funktioniert. Keine Angst – es ist nicht kompliziert!
 
 Wir danken dir herzlich für deine Unterstützung!
