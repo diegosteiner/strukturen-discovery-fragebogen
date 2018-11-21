@@ -4,6 +4,7 @@
     <main>
       <router-view/>
     </main>
+    <footer><a href="http://www.pfadizueri.ch/win">Gugus</a></footer>
   </div>
 </template>
 
@@ -45,6 +46,12 @@ export default {
 
 #app > main {
   padding-top: 100px;
+  margin-bottom: 200vh;
+}
+
+#app > footer {
+  font-size: 4px;
+  text-align: center;
 }
 
 label {
