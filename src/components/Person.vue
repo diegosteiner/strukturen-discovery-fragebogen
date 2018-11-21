@@ -132,7 +132,7 @@ export default {
       this.$store.commit("addRelation");
     },
     saveToDatabase: function() {
-      this.$store.dispatch("saveRoleToDatabase");
+      // this.$store.dispatch("saveRoleToDatabase");
       return this.$store.dispatch("savePersonToDatabase");
     },
     startFragebogen() {

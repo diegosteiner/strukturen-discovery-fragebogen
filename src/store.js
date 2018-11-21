@@ -154,15 +154,15 @@ export const store = new Vuex.Store({
         context.commit('setDataSaved', true);
       });
     },
-    saveRoleToDatabase: context => {
-      const roles = context.getters.getPerson.relations.map((val) => { return val.role });
-      const persistedRoles = context.getters.getRoles;
-      const b = roles.filter(e => {
-        return persistedRoles.indexOf(e) == -1
-      });
-      if (b.length > 0) {
-        return db.ref('roles/').set(persistedRoles.concat(b))
-      }
-    }
+    // saveRoleToDatabase: context => {
+    //   const roles = context.getters.getPerson.relations.map((val) => { return val.role });
+    //   const persistedRoles = context.getters.getRoles;
+    //   const b = roles.filter(e => {
+    //     return persistedRoles.indexOf(e) == -1
+    //   });
+    //   if (b.length > 0) {
+    //     return db.ref('roles/').set(persistedRoles.concat(b))
+    //   }
+    // }
   }
 });

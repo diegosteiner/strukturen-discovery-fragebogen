@@ -14,7 +14,7 @@
 
       <div class='flex-item'>
         <label>Rolle des Kontakts *</label>
-        <v-select taggable v-model="contact_role" :options="$store.state.roles">
+        <v-select taggable v-model="contact_role" :options="availableRoles">
         </v-select>
         <small class="help-text">Nichts passendes gefunden? Neue Rollen können mit Enter hinzugefügt werden.</small>
       </div>
@@ -60,6 +60,11 @@ export default {
         "mehrmals pro Jahr",
         "jährlich"
       ];
+    },
+    availableRoles() {
+      return this.$store.state.roles.filter(r => {
+        return r !== undefined && r !== null;
+      });
     },
     frequency_label() {
       return this.frequency_labels[this.contact_frequency];
