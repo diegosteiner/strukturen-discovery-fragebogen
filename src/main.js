@@ -14,20 +14,10 @@ import vSelect from 'vue-select'
 
 // Vue.use(VueFire);
 Vue.use(VueRouter);
-Vue.component('v-select', vSelect)
+Vue.component('v-select', vSelect);
 
 const router = new VueRouter({
   routes: [{
-    path: '',
-    name: 'Person',
-    component: Person
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: Login
-  },
-  {
     path: '/faq',
     name: 'faq',
     component: Faq

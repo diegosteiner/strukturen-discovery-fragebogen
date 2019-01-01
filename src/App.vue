@@ -1,32 +1,16 @@
 <template>
   <div id="app">
-    <div id="logo"><img src="./assets/logo.png"></div>
+    <div id="logo">
+      <img src="./assets/logo.png">
+    </div>
     <main>
-      <router-view/>
+      <h1>Umfrage abgeschlossen</h1>Die Umfrage ist abgeschlossen und wird nun ausgewertet. Vielen Dank für deine Mitarbeit bei diesem Projekt!
     </main>
-    <footer><a href="http://www.pfadizueri.ch/win">Gugus</a></footer>
   </div>
 </template>
 
 <script>
-import Person from "./components/Person";
 export default {
-  created() {
-    this.$store
-      .dispatch("setUser")
-      .then(() => {
-        return Promise.all([
-          this.$store.dispatch("getRolesFromDatabase"),
-          this.$store.dispatch("getTopicsFromDatabase")
-        ]);
-      })
-      .then(() => {
-        return this.$store.dispatch("getPersonFromDatabase");
-      })
-      .catch(reason => {
-        console.log(reason);
-      });
-  }
 };
 </script>
 
@@ -47,11 +31,6 @@ export default {
 #app > main {
   padding-top: 100px;
   margin-bottom: 200vh;
-}
-
-#app > footer {
-  font-size: 4px;
-  text-align: center;
 }
 
 label {
